@@ -167,7 +167,7 @@
                 var key = localStorage.key(i);
                 if (key.startsWith('character-')) {
                     var characterData = JSON.parse(localStorage.getItem(key));
-                    var character =                        var character = {
+                    var character = {
                             id: key.replace('character-', ''),
                             name: characterData.Name
                         };
