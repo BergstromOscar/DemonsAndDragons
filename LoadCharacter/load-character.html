@@ -14,11 +14,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Load Character</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Adjustments for the character list popup */
+        #character-list-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            max-width: 80%;
+        }
+
+        #character-list-popup ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        #character-list-popup li {
+            margin-bottom: 10px;
+        }
+
+        #close-popup-button {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #close-popup-button:hover {
+            background-color: white;
+            color: black;
+        }
+    </style>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVQPC4Q6"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVQPC4Q6"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <header>
@@ -83,7 +122,7 @@
                     const characterData = JSON.parse(localStorage.getItem('character ' + characterName));
                     $('#character-name').val(characterData.name);
                     $('#strength').val(characterData.strength);
-                    $('#dexterity').val(characterData.dexterity);
+                    $('#dexterity').                    val(characterData.dexterity);
                     $('#constitution').val(characterData.constitution);
                     $('#intelligence').val(characterData.intelligence);
                     $('#wisdom').val(characterData.wisdom);
@@ -99,7 +138,24 @@
                 localStorage.removeItem('character ' + characterName);
                 refreshCharacterList();
             });
+
+            // Load character from local storage
+            $('#load-character-button').click(function() {
+                const characterName = $('#character-name').val();
+                const characterData = {
+                    name: $('#character-name').val(),
+                    strength: $('#strength').val(),
+                    dexterity: $('#dexterity').val(),
+                    constitution: $('#constitution').val(),
+                    intelligence: $('#intelligence').val(),
+                    wisdom: $('#wisdom').val(),
+                    charisma: $('#charisma').val()
+                };
+                // Implement your logic to load the character data as needed
+                console.log('Loaded character:', characterData);
+            });
         });
     </script>
 </body>
 </html>
+
