@@ -147,13 +147,25 @@
 
         function saveStats() {
             var inputs = document.querySelectorAll("#stats-form input");
+            var characterData = {};
             inputs.forEach(function(input) {
                 var attributeName = input.getAttribute("id");
                 var attributeValue = input.value;
-                // Implement your save/update logic here
-                console.log("Attribute Name: " + attributeName + ", Attribute Value: " + attributeValue);
+                characterData[attributeName] = attributeValue;
             });
+
+            // Create a unique ID based on character name and timestamp
+            var characterName = characterData["Name"];
+            var currentTime = new Date().getTime();
+            var characterID = characterName.replace(/\s+/g, '-') + "-" + currentTime;
+
+            // Save character data to local storage
+            localStorage.setItem('character-' + characterID, JSON.stringify(characterData));
+
+            // Redirect to home page
+            window.location.href = '../index.html';
         }
     </script>
 </body>
 </html>
+
