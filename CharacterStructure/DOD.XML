@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Character>
+    <Background>
+        <Name></Name>
+        <Race></Race>
+        <Class></Class>
+        <History></History>
+        <Alignment></Alignment>
+        <Equipment></Equipment>
+    </Background>
+
+    <BasicStats>
+        <Strength>0</Strength>
+        <Agility>0</Agility>
+        <Stamina>0</Stamina>
+        <Intelligence>0</Intelligence>
+        <Psyche>0</Psyche>
+        <Willpower>0</Willpower>
+        <Charisma>0</Charisma>
+    </BasicStats>
+    
+    <SecondaryStats>
+        <HealthPoints>0</HealthPoints>
+        <ManaPoints>0</ManaPoints>
+        <ExperiencePoints>0</ExperiencePoints>
+    </SecondaryStats>
+    
+    <Skills>
+        <CombatSkills>0</CombatSkills>
+        <Sneak>0</Sneak>
+        <Lockpicking>0</Lockpicking>
+        <Thievery>0</Thievery>
+        <Survival>0</Survival>
+        <DressingSkill>0</DressingSkill>
+        <Haggling>0</Haggling>
+        <Seamanship>0</Seamanship>
+        <Riding>0</Riding>
+        <Orientation>0</Orientation>
+        <MilitaryStrategy>0</MilitaryStrategy>
+        <MagicalAbility>0</MagicalAbility>
+        <Knowledge>0</Knowledge>
+        <FirstAid>0</FirstAid>
+        <UnderwaterSwimming>0</UnderwaterSwimming>
+    </Skills>
+</Character>

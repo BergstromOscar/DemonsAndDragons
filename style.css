@@ -1,14 +1,15 @@
+/* Global styles */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap');
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Cinzel', serif;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-}
-
-body {
     position: relative;
+    background-color: #1a1a1a; /* Dark background for contrast */
 }
 
 body::before {
@@ -26,20 +27,28 @@ body::before {
 }
 
 header {
-    background-color: #2f352f;
+    background-color: #333;
     color: white;
     text-align: center;
-    padding: 0.75rem;
+    padding: 0rem;
     position: relative;
+    font-family: 'Cinzel', serif; /* Apply the fantasy font */
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+h1 {
+    margin: 0px;
 }
 
 #profile-icon {
     position: absolute;
-    top: 10px;
+    top: 50%;
     right: 10px;
     width: 40px;
     height: 40px;
     cursor: pointer;
+    transform: translateY(-50%);
 }
 
 main {
@@ -51,29 +60,33 @@ main {
 footer {
     color: white;
     text-align: center;
-    padding: 1rem;
+    padding: 0rem;
+    background-color: #333;
+    font-family: 'Cinzel', serif; /* Apply the fantasy font */
 }
 
-/* styles.css */
+/* Button styles */
 button {
-    background-color: #2f352f; /* Green */
+    background-color: rgba(47, 53, 47, 0.8); /* Slightly transparent background */
     border: none;
     color: white;
-    padding: 20px 40px; /* Adjust padding to increase button size */
+    padding: 15px 50px; /* Adjust padding for thinner and longer button */
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
+    font-size: 18px; /* Slightly larger font size */
+    margin: 10px 5px;
     cursor: pointer;
-    border-radius: 10px; /* Rounded corners */
-    transition: background-color 0.3s ease;
-    max-width: 300px;
-    
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    max-width: 400px;
+    clip-path: polygon(15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%, 0% 50%); /* Adjusted six-sided shape */
+    position: relative; /* To position the box-shadow */
+    font-family: 'Cinzel', serif; /* Apply the fantasy font */
 }
 
 button:hover {
-    background-color: #181b18; /* Darker green on hover */
+    background-color: rgba(24, 27, 24, 0.8); /* Darker and slightly transparent on hover */
+    transform: scale(1.05);
 }
 
 form {
@@ -87,19 +100,21 @@ form {
     margin: 10px 0;
 }
 
-/* styles.css */
+/* Popup styles */
 #character-list-popup {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #434b43;
+    background-color: rgba(67, 75, 67, 0.95);
     padding: 1rem;
     margin: 1rem;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     z-index: 1000;
     max-width: 80%;
+    color: white;
+    font-family: 'Cinzel', serif; /* Apply the fantasy font */
 }
 
 #character-list-popup ul {
@@ -111,14 +126,24 @@ form {
 #character-list-popup li {
     padding: 0.8rem 1rem;
     cursor: pointer;
-    color: white;
-    transition: background-color 0.3s ease; /* Smooth transition effect */
+    transition: background-color 0.3s ease;
 }
 
 #character-list-popup li:hover {
-    background-color: #393f39; /* Lighter background color on hover */
+    background-color: #3e3e3e;
 }
-.delete-character-button{
-float: right;
-background-color: aquamarine;
+
+.delete-character-button {
+    float: right;
+    background-color: #ff7f7f;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+    font-family: 'Cinzel', serif; /* Apply the fantasy font */
+}
+
+.delete-character-button:hover {
+    background-color: #ff4f4f;
 }

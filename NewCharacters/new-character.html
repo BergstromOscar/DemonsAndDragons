@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -9,26 +8,52 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-PVQPC4Q6');</script>
     <!-- End Google Tag Manager -->
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Character</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Center buttons and place them next to each other */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Space between buttons */
+            margin-top: 20px; /* Space above buttons */
+        }
+        /* Style for the form inputs */
+        #stats-form div {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+    </style>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVQPC4Q6"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVQPC4Q6"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    
+
     <header>
         <h1>New Character</h1>
     </header>
     <main id="stats-form">
         <!-- Stats will be dynamically added here -->
     </main>
-    <button onclick="saveStats()">Save</button>
-    <button onclick="window.location.href='../index.html'">Back to Home</button>
+    <div class="button-container">
+        <button onclick="saveStats()">Save</button>
+        <button onclick="window.location.href='../index.html'">Back to Home</button>
+    </div>
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
     </footer>
@@ -37,21 +62,43 @@
             displayStatsForm();
         });
 
+        function loadXMLDoc(filename) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", filename, false);
+            xhttp.send();
+            return xhttp.responseXML;
+        }
+
         function displayStatsForm() {
+            var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.XML');
+            var character = xmlDoc.getElementsByTagName("Character")[0];
             var statsForm = document.getElementById("stats-form");
-            for (var attributeName in characterStructure) {
-                var inputField = document.createElement("div");
-                var label = document.createElement("label");
-                label.setAttribute("for", attributeName);
-                label.textContent = attributeName + ":";
-                var input = document.createElement("input");
-                input.setAttribute("type", "text");
-                input.setAttribute("id", attributeName);
-                input.setAttribute("value", "");
-                inputField.appendChild(label);
-                inputField.appendChild(input);
-                statsForm.appendChild(inputField);
-            }
+            
+            Array.from(character.children).forEach(function(section) {
+                var sectionTitle = document.createElement("h2");
+                sectionTitle.textContent = section.nodeName;
+                statsForm.appendChild(sectionTitle);
+
+                Array.from(section.children).forEach(function(attribute) {
+                    var inputField = document.createElement("div");
+                    var label = document.createElement("label");
+                    label.setAttribute("for", attribute.nodeName);
+                    label.textContent = attribute.nodeName + ":";
+
+                    var input = document.createElement("input");
+                    if (!isNaN(attribute.textContent) && attribute.textContent.trim() !== "") {
+                        input.setAttribute("type", "number");
+                    } else {
+                        input.setAttribute("type", "text");
+                    }
+                    input.setAttribute("id", attribute.nodeName);
+                    input.setAttribute("value", attribute.textContent);
+                    
+                    inputField.appendChild(label);
+                    inputField.appendChild(input);
+                    statsForm.appendChild(inputField);
+                });
+            });
         }
 
         function saveStats() {
@@ -64,6 +111,5 @@
             });
         }
     </script>
-    <script src="../CharacterStructure/DOD.JS"></script>
 </body>
 </html>
