@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign In / Sign Up</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="../style.css">
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -58,10 +59,10 @@
 $(document).ready(function() {
     // Define the checkSignInStatus function
     function checkSignInStatus() {
-        if (!localStorage.getItem("signedIn")) {
-            window.location.href = "signin.html"; // Redirect to sign-in/sign-up page
-        }
+    if (!localStorage.getItem("signedIn") && window.location.pathname !== "/signin.html") {
+        window.location.href = "signin.html"; // Redirect to sign-in/sign-up page
     }
+}
 
     // Call the function after defining it
     checkSignInStatus();
