@@ -148,8 +148,7 @@
                     var characterID = this.getAttribute('data-character-id');
                     var characterData = JSON.parse(localStorage.getItem('character-' + characterID));
                     populateStatsForm(characterData);
-                    closePopup();
-                    addBackToHomeButton();
+                    closePopup()
                 });
             });
 
@@ -229,7 +228,7 @@
             // Add event listener to input field to update local storage
             input.addEventListener('input', function() {
                 characterData[attribute.nodeName] = input.value;
-                localStorage.setItem('character-' + characterData.id, JSON.stringify(characterData));
+                localStorage.setItem('character-'+ characterData["Name"] + characterData.id, JSON.stringify(characterData));
             });
 
             inputField.appendChild(label);
