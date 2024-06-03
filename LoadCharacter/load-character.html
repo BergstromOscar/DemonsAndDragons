@@ -228,6 +228,11 @@
                 }
             });
         }
+        function checkSignInStatus() {
+    if (!localStorage.getItem("signedIn")) {
+        window.location.href = "../SignInSignUp/signin.html"; // Redirect to sign-in/sign-up page
+    }
+}
     </script>
     
     </body>

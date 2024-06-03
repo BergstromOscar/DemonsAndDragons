@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In / Sign Up</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    form {
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    input[type="text"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+    .message {
+        margin-top: 10px;
+        text-align: center;
+    }
+</style>
+</head>
+<body>
+
+<form id="login-form">
+    <h2>Sign In</h2>
+    <input type="text" id="login-username" placeholder="Username" required>
+    <input type="password" id="login-password" placeholder="Password" required>
+    <input type="submit" value="Sign In">
+    <p class="message" id="login-message"></p>
+</form>
+
+<form id="signup-form" style="display: none;">
+    <h2>Sign Up</h2>
+    <input type="text" id="signup-username" placeholder="Username" required>
+    <input type="password" id="signup-password" placeholder="Password" required>
+    <input type="submit" value="Sign Up">
+    <p class="message" id="signup-message"></p>
+</form>
+
+<div class="message" id="switch-message">Don't have an account? <a href="#" id="switch-signup">Sign Up</a></div>
+
+<script>
+$(document).ready(function() {
+    checkSignInStatus();
+
+    // Switch between sign-in and sign-up forms
+    $("#switch-signup").click(function(e) {
+        e.preventDefault();
+        $("#login-form").hide();
+        $("#signup-form").show();
+        $("#switch-message").html("Already have an account? <a href='#' id='switch-login'>Sign In</a>");
+    });
+
+    $(document).on("click", "#switch-login", function(e) {
+        e.preventDefault();
+        $("#login-form").show();
+        $("#signup-form").hide();
+        $("#switch-message").html("Don't have an account? <a href='#' id='switch-signup'>Sign Up</a>");
+    });
+
+    // Handle sign in
+    $("#login-form").submit(function(e) {
+        e.preventDefault();
+        var username = $("#login-username").val();
+        var password = $("#login-password").val();
+        var storedPassword = localStorage.getItem(username);
+        if (storedPassword === password) {
+            localStorage.setItem("signedIn", "true");
+            $("#login-message").text("Successfully signed in.");
+            // Redirect or do other actions upon successful sign-in
+        } else {
+            $("#login-message").text("Incorrect username or password.");
+        }
+    });
+
+    // Handle sign up
+    $("#signup-form").submit(function(e) {
+        e.preventDefault();
+        var username = $("#signup-username").val();
+        var password = $("#signup-password").val();
+        if (localStorage.getItem(username)) {
+            $("#signup-message").text("Username already exists. Please choose another one.");
+        } else {
+            localStorage.setItem(username, password);
+            localStorage.setItem("signedIn", "true");
+            $("#signup-message").text("Successfully signed up. You can now sign in.");
+        }
+    });
+});
+
+function checkSignInStatus() {
+    if (!localStorage.getItem("signedIn")) {
+        window.location.href = "../SignInSignUp/signin.html"; // Redirect to sign-in/sign-up page
+    }
+}
+</script>
+
+</body>
+</html>
