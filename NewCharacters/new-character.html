@@ -153,17 +153,10 @@
                 var attributeValue = input.value;
                 characterData[attributeName] = attributeValue;
             });
-
-            // Create a unique ID based on character name and timestamp
-            var characterName = characterData["Name"];
-            var currentTime = new Date().getTime();
-            var characterID = characterName.replace(/\s+/g, '-') + "-" + currentTime;
+            var characterID = characterData["Name"];
 
             // Save character data to local storage
             localStorage.setItem('character-' + characterID, JSON.stringify(characterData));
-
-            // Redirect to home page
-            window.location.href = '../index.html';
         }
     </script>
 </body>
