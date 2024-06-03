@@ -26,9 +26,11 @@
             display: flex;
             justify-content: space-between;
             padding: 20px;
+            max-width: 75%;
+            margin: auto; /* Center the form */
         }
         .column {
-            width: 45%;
+            width: 48%; /* Adjusted width for better spacing */
         }
         .section {
             background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
@@ -50,7 +52,7 @@
         }
         input[type="text"],
         input[type="number"] {
-            width: 50%;
+            width: 55%; /* Adjusted width for better spacing */
             padding: 5px;
             box-sizing: border-box;
             border: none;
@@ -130,7 +132,6 @@
                     }
                     input.setAttribute("id", attribute.nodeName);
                     input.setAttribute("value", attribute.textContent);
-                    
                     inputField.appendChild(label);
                     inputField.appendChild(input);
                     container.appendChild(inputField);
