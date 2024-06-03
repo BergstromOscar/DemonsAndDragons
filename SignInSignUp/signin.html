@@ -56,6 +56,14 @@
 
 <script>
 $(document).ready(function() {
+    // Define the checkSignInStatus function
+    function checkSignInStatus() {
+        if (!localStorage.getItem("signedIn")) {
+            window.location.href = "signin.html"; // Redirect to sign-in/sign-up page
+        }
+    }
+
+    // Call the function after defining it
     checkSignInStatus();
 
     // Switch between sign-in and sign-up forms
