@@ -184,6 +184,19 @@
                 }
             }
 
+            // Close popup event listener
+document.getElementById('close-popup-button').addEventListener('click', function() {
+    closePopup();
+    removeBackToHomeButton(); // Call function to remove back to home button
+});
+
+// Function to remove back to home button
+function removeBackToHomeButton() {
+    var backToHomeButton = document.querySelector('.back-to-home-button');
+    if (backToHomeButton) {
+        backToHomeButton.remove();
+    }
+}
             function populateStatsForm(characterData) {
                 var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.xml');
                 var character = xmlDoc.getElementsByTagName("Character")[0];
@@ -233,6 +246,7 @@
                 buttonContainer.innerHTML = '<button onclick="window.location.href=\'../index.html\'">Back to Home</button>';
                 document.body.appendChild(buttonContainer);
             }
+
         </script>
     </body>
 </html>
