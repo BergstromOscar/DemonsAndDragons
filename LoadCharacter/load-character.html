@@ -179,30 +179,33 @@
                 container.appendChild(sectionTitle);
 
                 Array.from(section.children).forEach(function(attribute) {
-                    var inputField = document.createElement("div");
-                    inputField.classList.add("attribute-field");
-                    
-                    var label = document.createElement("label");
-                    label.setAttribute("for", attribute.nodeName);
-                    label.textContent = attribute.nodeName + ":";
+                var inputField = document.createElement("div");
+                inputField.classList.add("attribute-field");
+                
+                var label = document.createElement("label");
+                label.setAttribute("for", attribute.nodeName);
+                label.textContent = attribute.nodeName + ":";
 
-                    var input = document.createElement("input");
-                    if (!isNaN(attribute.textContent) && attribute.textContent.trim() !== "") {
-                        input.setAttribute("type", "number");
-                    } else {
-                        input.setAttribute("type", "text");
-                    }
-                    input.setAttribute("id", attribute.nodeName);
-                    input.setAttribute("value", characterData[attribute.nodeName]);
-                    inputField.appendChild(label);
-                    inputField.appendChild(input);
-                    container.appendChild(inputField);
-                    if (section.nodeName === "Skills") {
-                    rightColumn.appendChild(container);
+                var input = document.createElement("input");
+                if (!isNaN(attribute.textContent) && attribute.textContent.trim() !== "") {
+                    input.setAttribute("type", "number");
                 } else {
-                    leftColumn.appendChild(container);
+                    input.setAttribute("type", "text");
                 }
-            });
+                input.setAttribute("id", attribute.nodeName);
+                input.setAttribute("value", characterData[attribute.nodeName]);
+                inputField.appendChild(label);
+                inputField.appendChild(input);
+                container.appendChild(inputField);
+            }); // <-- Add this closing brace
+
+            if (section.nodeName === "Skills") {
+                rightColumn.appendChild(container);
+            } else {
+                leftColumn.appendChild(container);
+            }
+        });
+
         }
     </script>
 </body>
