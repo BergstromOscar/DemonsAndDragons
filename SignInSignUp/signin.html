@@ -91,7 +91,7 @@ $(document).ready(function() {
         if (storedPassword === password) {
             localStorage.setItem("signedIn", "true");
             $("#login-message").text("Successfully signed in.");
-            // Redirect or do other actions upon successful sign-in
+            window.location.href = "../index.html";
         } else {
             $("#login-message").text("Incorrect username or password.");
         }
