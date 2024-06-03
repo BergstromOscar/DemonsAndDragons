@@ -90,75 +90,71 @@
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        $(document).ready(function() {
             displayStatsForm();
         });
-
+    
         function loadXMLDoc(filename) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", filename, false);
             xhttp.send();
             return xhttp.responseXML;
         }
-
+    
         function displayStatsForm() {
             var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.xml');
-            var character = xmlDoc.getElementsByTagName("Character")[0];
-            var leftColumn = document.getElementById("left-column");
-            var rightColumn = document.getElementById("right-column");
-
-            Array.from(character.children).forEach(function(section) {
-                var sectionTitle = document.createElement("h2");
-                sectionTitle.textContent = section.nodeName;
-
-                var container = document.createElement("div");
-                container.classList.add("section");
-                container.appendChild(sectionTitle);
-
-                Array.from(section.children).forEach(function(attribute) {
-                    var inputField = document.createElement("div");
-                    inputField.classList.add("attribute-field");
+            var character = $(xmlDoc).find("Character").eq(0);
+            var leftColumn = $("#left-column");
+            var rightColumn = $("#right-column");
+    
+            character.children().each(function() {
+                var sectionTitle = $("<h2>").text($(this).prop("tagName"));
+    
+                var container = $("<div>").addClass("section");
+                container.append(sectionTitle);
+    
+                $(this).children().each(function() {
+                    var inputField = $("<div>").addClass("attribute-field");
                     
-                    var label = document.createElement("label");
-                    label.setAttribute("for", attribute.nodeName);
-                    label.textContent = attribute.nodeName + ":";
-
-                    var input = document.createElement("input");
-                    if (!isNaN(attribute.textContent) && attribute.textContent.trim() !== "") {
-                        input.setAttribute("type", "number");
+                    var label = $("<label>").attr("for", $(this).prop("tagName")).text($(this).prop("tagName") + ":");
+    
+                    var input = $("<input>").attr("id", $(this).prop("tagName"));
+                    if (!isNaN($(this).text()) && $(this).text().trim() !== "") {
+                        input.attr("type", "number");
                     } else {
-                        input.setAttribute("type", "text");
+                        input.attr("type", "text");
                     }
-                    input.setAttribute("id", attribute.nodeName);
-                    input.setAttribute("value", attribute.textContent);
-                    inputField.appendChild(label);
-                    inputField.appendChild(input);
-                    container.appendChild(inputField);
+                    input.val($(this).text());
+    
+                    inputField.append(label);
+                    inputField.append(input);
+                    container.append(inputField);
                 });
-
-                if (section.nodeName === "Skills") {
-                    rightColumn.appendChild(container);
+    
+                if ($(this).prop("tagName") === "Skills") {
+                    rightColumn.append(container);
                 } else {
-                    leftColumn.appendChild(container);
+                    leftColumn.append(container);
                 }
             });
         }
-
+    
         function saveStats() {
-            var inputs = document.querySelectorAll("#stats-form input");
             var characterData = {};
-            inputs.forEach(function(input) {
-                var attributeName = input.getAttribute("id");
-                var attributeValue = input.value;
+            $("#stats-form input").each(function() {
+                var attributeName = $(this).attr("id");
+                var attributeValue = $(this).val();
                 characterData[attributeName] = attributeValue;
             });
             var characterID = characterData["Name"];
-
+    
             // Save character data to local storage
             localStorage.setItem('character-' + characterID, JSON.stringify(characterData));
         }
     </script>
+    
 </body>
 </html>
 

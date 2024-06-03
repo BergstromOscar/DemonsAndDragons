@@ -116,61 +116,56 @@
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        $(document).ready(function() {
             displayCharacterList();
         });
-
+    
         function loadXMLDoc(filename) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", filename, false);
             xhttp.send();
             return xhttp.responseXML;
         }
-
+    
         function displayCharacterList() {
             var characterList = getCharacterList();
-            var popup = document.createElement("div");
-            popup.id = "character-list-popup";
-            popup.style.display = "block";
-            popup.innerHTML = `
+            var popup = $("<div>").attr("id", "character-list-popup").css("display", "block");
+            popup.html(`
                 <h2>Select a Character to Load or Delete</h2>
                 <ul id="character-list">
                     ${characterList.map(character => `<li>${character.name} <button class="load-character-button" data-character-id="${character.id}">Load</button> <button class="delete-character-button" data-character-id="${character.id}">X</button></li>`).join('')}
                 </ul>
                 <button id="close-popup-button">Close</button>
-            `;
-            document.body.appendChild(popup);
-
+            `);
+            $("body").append(popup);
+    
             // Event listener for loading character
-            document.querySelectorAll('.load-character-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    var characterID = this.getAttribute('data-character-id');
-                    var characterData = JSON.parse(localStorage.getItem('character-' + characterID));
-                    populateStatsForm(characterData);
-                    closePopup()
-                });
+            $('.load-character-button').click(function() {
+                var characterID = $(this).attr('data-character-id');
+                var characterData = JSON.parse(localStorage.getItem('character-' + characterID));
+                populateStatsForm(characterData);
+                closePopup();
             });
-
+    
             // Event listener for deleting character
-            document.querySelectorAll('.delete-character-button').forEach(button => {
-                button.addEventListener('click', function() {
-                    var characterID = this.getAttribute('data-character-id');
-                    var confirmation = confirm("Are you sure you want to delete this character?");
-                    if (confirmation) {
-                        localStorage.removeItem('character-' + characterID);
-                        closePopup();
-                        displayCharacterList(); // Refresh character list after deletion
-                    }
-                });
+            $('.delete-character-button').click(function() {
+                var characterID = $(this).attr('data-character-id');
+                var confirmation = confirm("Are you sure you want to delete this character?");
+                if (confirmation) {
+                    localStorage.removeItem('character-' + characterID);
+                    closePopup();
+                    displayCharacterList(); // Refresh character list after deletion
+                }
             });
-
+    
             // Close popup event listener
-            document.getElementById('close-popup-button').addEventListener('click', function() {
+            $('#close-popup-button').click(function() {
                 closePopup();
             });
         }
-
+    
         function getCharacterList() {
             var characterList = [];
             for (var i = 0; i < localStorage.length; i++) {
@@ -178,73 +173,63 @@
                 if (key.startsWith('character-')) {
                     var characterData = JSON.parse(localStorage.getItem(key));
                     var character = {
-                            id: key.replace('character-', ''),
-                            name: characterData.Name
-                        };
-                        characterList.push(character);
-                    }
-                }
-                return characterList;
-            }
-
-            function closePopup() {
-                var popup = document.getElementById('character-list-popup');
-                if (popup) {
-                    popup.remove();
+                        id: key.replace('character-', ''),
+                        name: characterData.Name
+                    };
+                    characterList.push(character);
                 }
             }
-
-            function populateStatsForm(characterData) {
-    var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.xml');
-    var character = xmlDoc.getElementsByTagName("Character")[0];
-    var leftColumn = document.getElementById("left-column");
-    var rightColumn = document.getElementById("right-column");
-
-    Array.from(character.children).forEach(function(section) {
-        var sectionTitle = document.createElement("h2");
-        sectionTitle.textContent = section.nodeName;
-
-        var container = document.createElement("div");
-        container.classList.add("section");
-        container.appendChild(sectionTitle);
-
-        Array.from(section.children).forEach(function(attribute) {
-            var inputField = document.createElement("div");
-            inputField.classList.add("attribute-field");
-            
-            var label = document.createElement("label");
-            label.setAttribute("for", attribute.nodeName);
-            label.textContent = attribute.nodeName + ":";
-
-            var input = document.createElement("input");
-            if (!isNaN(attribute.textContent) && attribute.textContent.trim() !== "") {
-                input.setAttribute("type", "number");
-            } else {
-                input.setAttribute("type", "text");
-            }
-            input.setAttribute("id", attribute.nodeName);
-            input.setAttribute("value", characterData[attribute.nodeName]);
-
-            // Add event listener to input field to update local storage
-            input.addEventListener('input', function() {
-                characterData[attribute.nodeName] = input.value;
-                localStorage.setItem('character-'+ characterData["Name"], JSON.stringify(characterData));
-            });
-
-            inputField.appendChild(label);
-            inputField.appendChild(input);
-            container.appendChild(inputField);
-        });
-
-        if (section.nodeName === "Skills") {
-            rightColumn.appendChild(container);
-        } else {
-            leftColumn.appendChild(container);
+            return characterList;
         }
-    });
-}
-
-        </script>
+    
+        function closePopup() {
+            $('#character-list-popup').remove();
+        }
+    
+        function populateStatsForm(characterData) {
+            var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.xml');
+            var character = $(xmlDoc).find("Character").eq(0);
+            var leftColumn = $("#left-column");
+            var rightColumn = $("#right-column");
+    
+            character.children().each(function() {
+                var sectionTitle = $("<h2>").text($(this).prop("tagName"));
+    
+                var container = $("<div>").addClass("section");
+                container.append(sectionTitle);
+    
+                $(this).children().each(function() {
+                    var inputField = $("<div>").addClass("attribute-field");
+                    
+                    var label = $("<label>").attr("for", $(this).prop("tagName")).text($(this).prop("tagName") + ":");
+    
+                    var input = $("<input>").attr("id", $(this).prop("tagName"));
+                    if (!isNaN($(this).text()) && $(this).text().trim() !== "") {
+                        input.attr("type", "number");
+                    } else {
+                        input.attr("type", "text");
+                    }
+                    input.val(characterData[$(this).prop("tagName")]);
+    
+                    input.on('input', function() {
+                        characterData[$(this).prop("tagName")] = $(this).val();
+                        localStorage.setItem('character-' + characterData["Name"], JSON.stringify(characterData));
+                    });
+    
+                    inputField.append(label);
+                    inputField.append(input);
+                    container.append(inputField);
+                });
+    
+                if ($(this).prop("tagName") === "Skills") {
+                    rightColumn.append(container);
+                } else {
+                    leftColumn.append(container);
+                }
+            });
+        }
+    </script>
+    
     </body>
 </html>
 

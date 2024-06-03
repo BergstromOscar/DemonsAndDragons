@@ -147,3 +147,54 @@ form {
 .delete-character-button:hover {
     background-color: #ff4f4f;
 }
+        /* Center buttons and place them next to each other */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Space between buttons */
+            margin-top: 20px; /* Space above buttons */
+        }
+        /* Style for the form inputs */
+        #stats-form {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            max-width: 75%;
+            margin: auto; /* Center the form */
+        }
+        .column {
+            width: 48%; /* Adjusted width for better spacing */
+        }
+        .section {
+            background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .attribute-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 45%;
+            font-weight: bold;
+            color: white;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="email"] {
+            width: 55%; /* Adjusted width for better spacing */
+            padding: 5px;
+            box-sizing: border-box;
+            border: none;
+            border-bottom: 2px solid white;
+            background: none;
+            color: white;
+            outline: none;
+        }
+        input[type="number"] {
+            text-align: right;
+        }
