@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demons And Dragons</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Demons And Dragons</h1>
+        <img src="profile-icon.png" id="profile-icon" alt="Profile Icon">
+    </header>
+    <main>
+        <button id="new-character-button">New Character</button>
+        <button id="load-character-button">Load Character</button>
+    </main>
+    <footer>
+        <p>&copy; 2024 Demons And Dragons</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#profile-icon').click(function() {
+                window.location.href = 'Profile/profile.html';
+            });
+            $('#new-character-button').click(function() {
+                window.location.href = 'NewCharacters/new-character.html';
+            });
+            $('#load-character-button').click(function() {
+                window.location.href = 'LoadCharacter/load-character.html';
+            });
+        });
+    </script>
+</body>
+</html>

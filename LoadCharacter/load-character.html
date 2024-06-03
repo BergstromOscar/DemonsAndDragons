@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Load Character</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>Load Character</h1>
+    </header>
+    <main>
+        <h2>Select a Character to Load or Delete</h2>
+        <div id="character-list-popup">
+            <ul id="character-list"></ul>
+            <button id="close-popup-button">Close</button>
+        </div>
+        <form id="dnd-stats-form" style="display:none;">
+            <label for="character-name">Character Name:</label>
+            <input type="text" id="character-name" name="character-name" readonly><br><br>
+            <label for="strength">Strength:</label>
+            <input type="number" id="strength" name="strength"><br><br>
+            <label for="dexterity">Dexterity:</label>
+            <input type="number" id="dexterity" name="dexterity"><br><br>
+            <label for="constitution">Constitution:</label>
+            <input type="number" id="constitution" name="constitution"><br><br>
+            <label for="intelligence">Intelligence:</label>
+            <input type="number" id="intelligence" name="intelligence"><br><br>
+            <label for="wisdom">Wisdom:</label>
+            <input type="number" id="wisdom" name="wisdom"><br><br>
+            <label for="charisma">Charisma:</label>
+            <input type="number" id="charisma" name="charisma"><br><br>
+            <button type="button" id="load-character-button">Load Character</button>
+        </form>
+        <button onclick="window.location.href='../index.html'">Back to Home</button>
+    </main>
+    <footer>
+        <p>&copy; 2024 Demons And Dragons</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Show the list of characters in a popup
+            function refreshCharacterList() {
+                $('#character-list').empty();
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key.startsWith('character ')) {
+                        const characterName = key.replace('character ', '');
+                        $('#character-list').append(
+                            '<li>' + characterName + ' <button class="delete-character-button" data-character-name="' + characterName + '">Delete</button></li>'
+                        );
+                    }
+                }
+            }
+            refreshCharacterList();
+            $('#character-list-popup').show();
+
+            // Close the character list popup
+            $('#close-popup-button').click(function() {
+                $('#character-list-popup').hide();
+            });
+
+            // Load the selected character data into the form
+            $(document).on('click', '#character-list li', function(event) {
+                if (!$(event.target).hasClass('delete-character-button')) {
+                    const characterName = $(this).contents().get(0).nodeValue.trim();
+                    const characterData = JSON.parse(localStorage.getItem('character ' + characterName));
+                    $('#character-name').val(characterData.name);
+                    $('#strength').val(characterData.strength);
+                    $('#dexterity').val(characterData.dexterity);
+                    $('#constitution').val(characterData.constitution);
+                    $('#intelligence').val(characterData.intelligence);
+                    $('#wisdom').val(characterData.wisdom);
+                    $('#charisma').val(characterData.charisma);
+                    $('#character-list-popup').hide();
+                    $('#dnd-stats-form').show();
+                }
+            });
+
+            // Delete character from local storage
+            $(document).on('click', '.delete-character-button', function(event) {
+                const characterName = $(this).data('character-name');
+                localStorage.removeItem('character ' + characterName);
+                refreshCharacterList();
+            });
+        });
+    </script>
+</body>
+</html>

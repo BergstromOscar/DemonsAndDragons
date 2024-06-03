@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body {
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(2px); /* Adjust the blur intensity as needed */
+    z-index: -1; /* Ensure the pseudo-element is behind the content */
+}
+
+header {
+    background-color: #2f352f;
+    color: white;
+    text-align: center;
+    padding: 0.75rem;
+    position: relative;
+}
+
+#profile-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+    text-align: center;
+}
+
+footer {
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* styles.css */
+button {
+    background-color: #2f352f; /* Green */
+    border: none;
+    color: white;
+    padding: 20px 40px; /* Adjust padding to increase button size */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 10px; /* Rounded corners */
+    transition: background-color 0.3s ease;
+    max-width: 300px;
+    
+}
+
+button:hover {
+    background-color: #181b18; /* Darker green on hover */
+}
+
+form {
+    display: inline-block;
+    text-align: left;
+    margin-top: 1rem;
+}
+
+#profile-display p {
+    text-align: left;
+    margin: 10px 0;
+}
+
+/* styles.css */
+#character-list-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #434b43;
+    padding: 1rem;
+    margin: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-width: 80%;
+}
+
+#character-list-popup ul {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+#character-list-popup li {
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+}
+
+#character-list-popup li:hover {
+    background-color: #393f39; /* Lighter background color on hover */
+}
+.delete-character-button{
+float: right;
+background-color: aquamarine;
+}

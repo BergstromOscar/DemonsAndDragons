@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Character</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <header>
+        <h1>New Character</h1>
+    </header>
+    <main id="stats-form">
+        <!-- Stats will be dynamically added here -->
+    </main>
+    <button onclick="saveStats()">Save</button>
+    <button onclick="window.location.href='../index.html'">Back to Home</button>
+    <footer>
+        <p>&copy; 2024 Demons And Dragons</p>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            displayStatsForm();
+        });
+
+        function displayStatsForm() {
+            var statsForm = document.getElementById("stats-form");
+            for (var attributeName in characterStructure) {
+                var inputField = document.createElement("div");
+                var label = document.createElement("label");
+                label.setAttribute("for", attributeName);
+                label.textContent = attributeName + ":";
+                var input = document.createElement("input");
+                input.setAttribute("type", "text");
+                input.setAttribute("id", attributeName);
+                input.setAttribute("value", "");
+                inputField.appendChild(label);
+                inputField.appendChild(input);
+                statsForm.appendChild(inputField);
+            }
+        }
+
+        function saveStats() {
+            var inputs = document.querySelectorAll("#stats-form input");
+            inputs.forEach(function(input) {
+                var attributeName = input.getAttribute("id");
+                var attributeValue = input.value;
+                // Implement your save/update logic here
+                console.log("Attribute Name: " + attributeName + ", Attribute Value: " + attributeValue);
+            });
+        }
+    </script>
+    <script src="../CharacterStructure/DOD.JS"></script>
+</body>
+</html>
