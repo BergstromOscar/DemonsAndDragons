@@ -59,8 +59,8 @@
 $(document).ready(function() {
     // Define the checkSignInStatus function
     function checkSignInStatus() {
-    if (!localStorage.getItem("signedIn") && window.location.pathname !== "/signin.html") {
-        window.location.href = "signin.html"; // Redirect to sign-in/sign-up page
+    if (!localStorage.getItem("signedIn") && window.location.pathname !== "https://demons-and-dragons.netlify.app/signinsignup/signin.html") {
+        window.location.href = "/signinsignup/signin.html"; // Redirect to sign-in/sign-up page
     }
 }
 
