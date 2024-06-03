@@ -228,7 +228,7 @@
             // Add event listener to input field to update local storage
             input.addEventListener('input', function() {
                 characterData[attribute.nodeName] = input.value;
-                localStorage.setItem('character-'+ characterData["Name"] + characterData.id, JSON.stringify(characterData));
+                localStorage.setItem('character-'+ characterData["Name"], JSON.stringify(characterData));
             });
 
             inputField.appendChild(label);
