@@ -64,6 +64,21 @@
         input[type="number"] {
             text-align: right;
         }
+        .load-character-button, .delete-character-button {
+            padding: 5px 10px;
+            border: none;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .load-character-button:hover, .delete-character-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+        }
+        .delete-character-button {
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
@@ -106,7 +121,7 @@
             popup.innerHTML = `
                 <h2>Select a Character to Load or Delete</h2>
                 <ul id="character-list">
-                    ${characterList.map(character => `<li>${character.name} <button class="load-character-button" data-character-id="${character.id}">Load</button> <button class="delete-character-button" data-character-id="${character.id}">Delete</button></li>`).join('')}
+                    ${characterList.map(character => `<li>${character.name} <button class="load-character-button" data-character-id="${character.id}">Load</button> <button class="delete-character-button" data-character-id="${character.id}">X</button></li>`).join('')}
                 </ul>
                 <button id="close-popup-button">Close</button>
             `;
@@ -119,6 +134,7 @@
                     var characterData = JSON.parse(localStorage.getItem('character-' + characterID));
                     populateStatsForm(characterData);
                     closePopup();
+                    addBackToHomeButton();
                 });
             });
 
@@ -179,34 +195,41 @@
                 container.appendChild(sectionTitle);
 
                 Array.from(section.children).forEach(function(attribute) {
-                var inputField = document.createElement("div");
-                inputField.classList.add("attribute-field");
-                
-                var label = document.createElement("label");
-                label.setAttribute("for", attribute.nodeName);
-                label.textContent = attribute.nodeName + ":";
+                    var inputField = document.createElement("div");
+                    inputField.classList.add("attribute-field");
+                    
+                    var label = documentcreateElement("label");
+                    label.setAttribute("for", attribute.nodeName);
+                    label.textContent = attribute.nodeName + ":";
 
-                var input = document.createElement("input");
-                if (!isNaN(attribute.textContent) && attribute.textContent.trim() !== "") {
-                    input.setAttribute("type", "number");
+                    var input = document.createElement("input");
+                    if (!isNaN(attribute.textContent) && attribute.textContent.trim() !== "") {
+                        input.setAttribute("type", "number");
+                    } else {
+                        input.setAttribute("type", "text");
+                    }
+                    input.setAttribute("id", attribute.nodeName);
+                    input.setAttribute("value", characterData[attribute.nodeName]);
+                    inputField.appendChild(label);
+                    inputField.appendChild(input);
+                    container.appendChild(inputField);
+                });
+
+                if (section.nodeName === "Skills") {
+                    rightColumn.appendChild(container);
                 } else {
-                    input.setAttribute("type", "text");
+                    leftColumn.appendChild(container);
                 }
-                input.setAttribute("id", attribute.nodeName);
-                input.setAttribute("value", characterData[attribute.nodeName]);
-                inputField.appendChild(label);
-                inputField.appendChild(input);
-                container.appendChild(inputField);
-            }); // <-- Add this closing brace
+            });
+        }
 
-            if (section.nodeName === "Skills") {
-                rightColumn.appendChild(container);
-            } else {
-                leftColumn.appendChild(container);
-            }
-        });
-
+        function addBackToHomeButton() {
+            var buttonContainer = document.createElement('div');
+            buttonContainer.classList.add('button-container');
+            buttonContainer.innerHTML = '<button onclick="window.location.href=\'../index.html\'">Back to Home</button>';
+            document.body.appendChild(buttonContainer);
         }
     </script>
 </body>
 </html>
+
