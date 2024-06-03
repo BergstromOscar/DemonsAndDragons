@@ -22,17 +22,27 @@
             margin-top: 20px; /* Space above buttons */
         }
         /* Style for the form inputs */
-        #stats-form div {
+        #stats-form {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+        .column {
+            width: 45%;
+        }
+        .attribute-field {
+            display: flex;
+            justify-content: space-between;
             margin-bottom: 10px;
         }
         label {
-            display: block;
-            margin-bottom: 5px;
+            display: inline-block;
+            width: 40%;
             font-weight: bold;
         }
         input[type="text"],
         input[type="number"] {
-            width: 100%;
+            width: 55%;
             padding: 8px;
             box-sizing: border-box;
         }
@@ -48,7 +58,12 @@
         <h1>New Character</h1>
     </header>
     <main id="stats-form">
-        <!-- Stats will be dynamically added here -->
+        <div class="column" id="left-column">
+            <!-- Left column content will be dynamically added here -->
+        </div>
+        <div class="column" id="right-column">
+            <!-- Right column content will be dynamically added here -->
+        </div>
     </main>
     <div class="button-container">
         <button onclick="saveStats()">Save</button>
@@ -70,17 +85,22 @@
         }
 
         function displayStatsForm() {
-            var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.XML');
+            var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.xml');
             var character = xmlDoc.getElementsByTagName("Character")[0];
-            var statsForm = document.getElementById("stats-form");
-            
+            var leftColumn = document.getElementById("left-column");
+            var rightColumn = document.getElementById("right-column");
+
             Array.from(character.children).forEach(function(section) {
                 var sectionTitle = document.createElement("h2");
                 sectionTitle.textContent = section.nodeName;
-                statsForm.appendChild(sectionTitle);
+
+                var container = document.createElement("div");
+                container.appendChild(sectionTitle);
 
                 Array.from(section.children).forEach(function(attribute) {
                     var inputField = document.createElement("div");
+                    inputField.classList.add("attribute-field");
+                    
                     var label = document.createElement("label");
                     label.setAttribute("for", attribute.nodeName);
                     label.textContent = attribute.nodeName + ":";
@@ -96,8 +116,14 @@
                     
                     inputField.appendChild(label);
                     inputField.appendChild(input);
-                    statsForm.appendChild(inputField);
+                    container.appendChild(inputField);
                 });
+
+                if (section.nodeName === "Skills") {
+                    rightColumn.appendChild(container);
+                } else {
+                    leftColumn.appendChild(container);
+                }
             });
         }
 
