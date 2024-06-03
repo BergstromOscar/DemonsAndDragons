@@ -109,14 +109,14 @@
         document.addEventListener('DOMContentLoaded', function() {
             displayCharacterList();
         });
-
+    
         function loadXMLDoc(filename) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", filename, false);
             xhttp.send();
             return xhttp.responseXML;
         }
-
+    
         function displayCharacterList() {
             var characterList = getCharacterList();
             var popup = document.createElement("div");
@@ -130,7 +130,7 @@
                 <button id="close-popup-button">Close</button>
             `;
             document.body.appendChild(popup);
-
+    
             // Event listener for loading character
             document.querySelectorAll('.load-character-button').forEach(button => {
                 button.addEventListener('click', function() {
@@ -141,7 +141,7 @@
                     addBackToHomeButton();
                 });
             });
-
+    
             // Event listener for deleting character
             document.querySelectorAll('.delete-character-button').forEach(button => {
                 button.addEventListener('click', function() {
@@ -154,13 +154,13 @@
                     }
                 });
             });
-
+    
             // Close popup event listener
             document.getElementById('close-popup-button').addEventListener('click', function() {
                 closePopup();
             });
         }
-
+    
         function getCharacterList() {
             var characterList = [];
             for (var i = 0; i < localStorage.length; i++) {
@@ -168,65 +168,74 @@
                 if (key.startsWith('character-')) {
                     var characterData = JSON.parse(localStorage.getItem(key));
                     var character = {
-                            id: key.replace('character-', ''),
-                            name: characterData.Name
-                        };
-                        characterList.push(character);
-                    }
-                }
-                return characterList;
-            }
-
-            function closePopup() {
-                var popup = document.getElementById('character-list-popup');
-                if (popup) {
-                    popup.remove();
+                        id: key.replace('character-', ''),
+                        name: characterData.Name
+                    };
+                    characterList.push(character);
                 }
             }
-
-            function populateStatsForm(characterData) {
-                var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.xml');
-                var character = xmlDoc.getElementsByTagName("Character")[0];
-                var leftColumn = document.getElementById("left-column");
-                var rightColumn = document.getElementById("right-column");
-
-                Array.from(character.children).forEach(function(section) {
-                    var sectionTitle = document.createElement("h2");
-                    sectionTitle.textContent = section.nodeName;
-
-                    var container = document.createElement("div");
-                    container.classList.add("section");
-                    container.appendChild(sectionTitle);
-
-                    Array.from(section.children).forEach(function(attribute) {
-                        var inputField = document.createElement("div");
-                        inputField.classList.add("attribute-field");
-                        
-                        var label = document.createElement("label");
-                        label.setAttribute("for", attribute.nodeName);
-                        label.textContent = attribute.nodeName + ":";
-
-                        var input = document.createElement("input");
-                        if (!isNaN(attribute.textContent) && attribute.textContent.trim() !== "") {
-                            input.setAttribute("type", "number");
-                        } else {
-                            input.setAttribute("type", "text");
-                        }
-                        input.setAttribute("id", attribute.nodeName);
-                        input.setAttribute("value", characterData[attribute.nodeName]);
-                        inputField.appendChild(label);
-                        inputField.appendChild(input);
-                        container.appendChild(inputField);
-                    });
-
-                    if (section.nodeName === "Skills") {
-                        rightColumn.appendChild(container);
+            return characterList;
+        }
+    
+        function closePopup() {
+            var popup = document.getElementById('character-list-popup');
+            if (popup) {
+                popup.remove();
+            }
+        }
+    
+        function populateStatsForm(characterData) {
+            var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.xml');
+            var character = xmlDoc.getElementsByTagName("Character")[0];
+            var leftColumn = document.getElementById("left-column");
+            var rightColumn = document.getElementById("right-column");
+    
+            Array.from(character.children).forEach(function(section) {
+                var sectionTitle = document.createElement("h2");
+                sectionTitle.textContent = section.nodeName;
+    
+                var container = document.createElement("div");
+                container.classList.add("section");
+                container.appendChild(sectionTitle);
+    
+                Array.from(section.children).forEach(function(attribute) {
+                    var inputField = document.createElement("div");
+                    inputField.classList.add("attribute-field");
+                    
+                    var label = document.createElement("label");
+                    label.setAttribute("for", attribute.nodeName);
+                    label.textContent = attribute.nodeName + ":";
+    
+                    var input = document.createElement("input");
+                    if (!isNaN(attribute.textContent) && attribute.textContent.trim() !== "") {
+                        input.setAttribute("type", "number");
                     } else {
-                        leftColumn.appendChild(container);
+                        input.setAttribute("type", "text");
                     }
+                    input.setAttribute("id", attribute.nodeName);
+                    input.setAttribute("value", characterData[attribute.nodeName]);
+                    
+                    // Add event listener to input field
+                    input.addEventListener('input', function() {
+                        // Update local storage when input value changes
+                        characterData[attribute.nodeName] = input.value;
+                        localStorage.setItem('character-' + characterData.id, JSON.stringify(characterData));
+                    });
+                    
+                    inputField.appendChild(label);
+                    inputField.appendChild(input);
+                    container.appendChild(inputField);
                 });
-            }
-        </script>
+    
+                if (section.nodeName === "Skills") {
+                    rightColumn.appendChild(container);
+                } else {
+                    leftColumn.appendChild(container);
+                }
+            });
+        }
+    </script>
+    
     </body>
 </html>
 
