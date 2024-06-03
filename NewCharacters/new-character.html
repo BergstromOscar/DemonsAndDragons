@@ -30,21 +30,37 @@
         .column {
             width: 45%;
         }
+        .section {
+            background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
         .attribute-field {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 10px;
         }
         label {
             display: inline-block;
-            width: 40%;
+            width: 45%;
             font-weight: bold;
+            color: white;
         }
         input[type="text"],
         input[type="number"] {
-            width: 55%;
-            padding: 8px;
+            width: 50%;
+            padding: 5px;
             box-sizing: border-box;
+            border: none;
+            border-bottom: 2px solid white;
+            background: none;
+            color: white;
+            outline: none;
+        }
+        input[type="number"] {
+            text-align: right;
         }
     </style>
 </head>
@@ -95,6 +111,7 @@
                 sectionTitle.textContent = section.nodeName;
 
                 var container = document.createElement("div");
+                container.classList.add("section");
                 container.appendChild(sectionTitle);
 
                 Array.from(section.children).forEach(function(attribute) {
