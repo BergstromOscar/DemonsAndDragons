@@ -65,33 +65,39 @@
         input[type="number"] {
             text-align: right;
         }
-        .load-character-button, .delete-character-button {
+        .character-name {
+            font-size: 20px;
+            cursor: pointer;
+            text-align: center;
+            display: block;
+            color: white;
+            margin-bottom: 10px;
+        }
+        .delete-character-button {
             padding: 5px 10px;
             border: none;
             background-color: transparent;
-            color: white;
+            color: red; /* Make delete buttons red */
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            display: block;
+            margin: 0 auto;
         }
-        .load-character-button:hover, .delete-character-button:hover {
+        .delete-character-button:hover {
             background-color: rgba(255, 255, 255, 0.3);
             border-radius: 5px;
         }
-        .delete-character-button {
-            font-size: 16px;
-            color: red; /* Make delete buttons red */
-        }
         #character-list-popup {
-    background-color: rgba(47, 53, 47, 0.9); /* Adjusted background color */
-    border-radius: 8px;
-    padding: 20px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Added box shadow */
-}
+            background-color: rgba(47, 53, 47, 0.9); /* Adjusted background color */
+            border-radius: 8px;
+            padding: 20px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Added box shadow */
+        }
     </style>
 </head>
 <body>
@@ -113,9 +119,6 @@
             <!-- Right column content will be dynamically added here -->
         </div>
     </main>
-    <div class="button-container">
-        <button onclick="window.location.href='../index.html'">Back to Home</button> <!-- Back to Home button -->
-    </div>
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
     </footer>
@@ -141,14 +144,20 @@
             popup.html(`
                 <h2>Select a Character to Load or Delete</h2>
                 <ul id="character-list">
-                    ${characterList.map(character => `<li>${character.name} <button class="load-character-button" data-character-id="${character.id}">Load</button> <button class="delete-character-button" data-character-id="${character.id}">X</button></li>`).join('')}
+                    ${characterList.map(character => `
+                        <li>
+                            <span class="character-name" data-character-id="${character.id}">${character.name}</span>
+                            <button class="delete-character-button" data-character-id="${character.id}">X</button>
+                        </li>`).join('')}
                 </ul>
-                <button id="close-popup-button">Close</button>
+                <div class="button-container">
+                    <button onclick="window.location.href='../index.html'">Back to Home</button>
+                </div>
             `);
             $("body").append(popup);
     
             // Event listener for loading character
-            $('.load-character-button').click(function() {
+            $('.character-name').click(function() {
                 var characterID = $(this).attr('data-character-id');
                 var characterData = JSON.parse(localStorage.getItem('character-' + characterID));
                 populateStatsForm(characterData);
@@ -164,11 +173,6 @@
                     closePopup();
                     displayCharacterList(); // Refresh character list after deletion
                 }
-            });
-    
-            // Close popup event listener
-            $('#close-popup-button').click(function() {
-                closePopup();
             });
         }
     
@@ -235,12 +239,10 @@
             });
         }
         function checkSignInStatus() {
-    if (!localStorage.getItem("signedIn")) {
-        window.location.href = "../SignInSignUp/signin.html"; // Redirect to sign-in/sign-up page
-    }
-}
+            if (!localStorage.getItem("signedIn")) {
+                window.location.href = "../SignInSignUp/signin.html"; // Redirect to sign-in/sign-up page
+            }
+        }
     </script>
-    
-    </body>
+</body>
 </html>
-
