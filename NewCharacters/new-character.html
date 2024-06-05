@@ -53,7 +53,8 @@
             color: white;
         }
         input[type="text"],
-        input[type="number"] {
+        input[type="number"],
+        select {
             width: 55%; /* Adjusted width for better spacing */
             padding: 5px;
             box-sizing: border-box;
@@ -113,9 +114,9 @@
     </div>
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
+        <div class="last-saved" id="last-saved">Last saved: N/A</div>
     </footer>
     <div class="save-popup" id="save-popup">Data has been saved!</div>
-    <div class="last-saved" id="last-saved">Last saved: N/A</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -149,13 +150,28 @@
 
                     var label = $("<label>").attr("for", $(this).prop("tagName")).text($(this).prop("tagName") + ":");
 
-                    var input = $("<input>").attr("id", $(this).prop("tagName"));
-                    if (!isNaN($(this).text()) && $(this).text().trim() !== "") {
-                        input.attr("type", "number");
+                    var input;
+                    if ($(this).prop("tagName") === "Race") {
+                        input = $("<select>").attr("id", "Race");
+                        $(this).children().each(function() {
+                            var option = $("<option>").val($(this).prop("tagName")).text($(this).prop("tagName"));
+                            input.append(option);
+                            if ($(this).children().length > 0) {
+                                $(this).children().each(function() {
+                                    var subOption = $("<option>").val($(this).text()).text($(this).prop("tagName") + ": " + $(this).text());
+                                    input.append(subOption);
+                                });
+                            }
+                        });
                     } else {
-                        input.attr("type", "text");
+                        input = $("<input>").attr("id", $(this).prop("tagName"));
+                        if (!isNaN($(this).text()) && $(this).text().trim() !== "") {
+                            input.attr("type", "number");
+                        } else {
+                            input.attr("type", "text");
+                        }
+                        input.val($(this).text());
                     }
-                    input.val($(this).text());
 
                     input.on('input', function() {
                         saveStats();
@@ -176,7 +192,7 @@
 
         function saveStats() {
             var characterData = {};
-            $("#stats-form input").each(function() {
+            $("#stats-form input, #stats-form select").each(function() {
                 var attributeName = $(this).attr("id");
                 var attributeValue = $(this).val();
                 characterData[attributeName] = attributeValue;
@@ -195,7 +211,7 @@
             savePopup.fadeIn();
             setTimeout(function() {
                 savePopup.fadeOut();
-            }, 3000); // Show the popup for 3 seconds
+            }, 2000); // Show the popup for 2 seconds
         }
 
         function updateLastSaved() {

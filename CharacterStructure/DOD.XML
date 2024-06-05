@@ -2,7 +2,56 @@
 <Character>
     <Background>
         <Name></Name>
-        <Race></Race>
+        <Race>
+            <Human/>
+            <Elf>
+                <Subrace>High Elf</Subrace>
+                <Subrace>Wood Elf</Subrace>
+                <Subrace>Dark Elf</Subrace>
+            </Elf>
+            <Dwarf>
+                <Subrace>Hill Dwarf</Subrace>
+                <Subrace>Mountain Dwarf</Subrace>
+            </Dwarf>
+            <Halfling>
+                <Subrace>Lightfoot Halfling</Subrace>
+                <Subrace>Stout Halfling</Subrace>
+            </Halfling>
+            <Gnome>
+                <Subrace>Forest Gnome</Subrace>
+                <Subrace>Rock Gnome</Subrace>
+            </Gnome>
+            <Orc/>
+            <HalfOrc/>
+            <HalfElf/>
+            <Tiefling/>
+            <Dragonborn/>
+            <Aasimar/>
+            <Tabaxi/>
+            <Triton/>
+            <Lizardfolk/>
+            <Goblin/>
+            <Kobold/>
+            <Firbolg/>
+            <Genasi/>
+            <Kenku/>
+            <YuanTiPureblood/>
+            <Aarakocra/>
+            <Warforged/>
+            <Gith>
+                <Subrace>Githyanki</Subrace>
+                <Subrace>Githzerai</Subrace>
+            </Gith>
+            <Shifter/>
+            <Changeling/>
+            <Minotaur/>
+            <Satyr/>
+            <Centaur/>
+            <Goliath/>
+            <Hobgoblin/>
+            <Bugbear/>
+            <Kalashtar/>
+        </Race>
         <Class></Class>
         <History></History>
         <Alignment></Alignment>
