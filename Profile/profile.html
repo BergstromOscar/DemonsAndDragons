@@ -21,6 +21,8 @@
         padding: 15px;
         margin-bottom: 20px;
         border-radius: 8px;
+        text-align: center;
+        color: white;
     }
     </style>
 </head>
@@ -38,7 +40,7 @@
     <main>
         <div class="column" id="left-column">
         <h2>Profile Information</h2>
-        <div id="profile-display">
+        <div class="profile-display" id="profile-display">
             <p><strong>Name:</strong> <span id="display-name"></span></p>
             <p><strong>Surname:</strong> <span id="display-surname"></span></p>
             <p><strong>Age:</strong> <span id="display-age"></span></p>
@@ -57,7 +59,9 @@
             <button type="button" id="save-profile-button">Save Profile</button>
         </form>
     </div>
-        <button onclick="window.location.href='../index.html'">Back to Home</button>
+        <div class="button-container">
+            <button onclick="window.location.href='../index.html'">Back to Home</button>
+        </div>
     </main>
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
@@ -65,6 +69,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
+                // Call the function after defining it
+    checkSignInStatus();
             // Load profile data from local storage if it exists
             function loadProfileData() {
                 if (localStorage.getItem('profileData')) {
@@ -107,9 +113,10 @@
                 $('#profile-form').show();
             });
         });
-        function checkSignInStatus() {
-    if (!localStorage.getItem("signedIn")) {
-        window.location.href = "../SignInSignUp/signin.html"; // Redirect to sign-in/sign-up page
+            // Define the checkSignInStatus function
+            function checkSignInStatus() {
+    if (!localStorage.getItem("signedIn") && window.location.pathname.includes("SignInSignUp/signin.html")) {
+        window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
     }
 }
     </script>

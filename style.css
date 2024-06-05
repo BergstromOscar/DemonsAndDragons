@@ -223,3 +223,19 @@ input[type="number"] {
     border-radius: 5px;
     z-index: 10000;
 }
+/* Additional styles for centering the Back to Home button */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Additional styles for user information */
+.profile-display {
+    background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+    color: white;
+}
