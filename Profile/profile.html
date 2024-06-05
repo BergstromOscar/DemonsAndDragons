@@ -16,64 +16,90 @@
     <link rel="stylesheet" href="../style.css">
     <link id="favicon" rel="shortcut icon" type="image/png" href="../favicon.png" />
     <style>
-    .profile-display {
-        background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
-        padding: 15px;
-        margin-bottom: 20px;
-        border-radius: 8px;
-        text-align: center;
-        color: white;
-    }
+        .container {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .column {
+            width: 45%; /* Adjust as needed */
+            background-color: rgba(47, 53, 47, 0.9);
+            background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    clip-path: polygon(5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%, 0% 5%); /* Eight-sided shape */
+            text-align: center;
+            color: white;
+        }
+
+        .group-container {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVQPC4Q6"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVQPC4Q6"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <header>
         <a href="../SignInSignUp/signin.html">
             <img src="../DADIcon.png" id="icon" alt="Main Icon">
         </a>
-            <h1>Your Profile</h1>
-            <img src="../profile-icon.png" id="profile-icon" alt="Profile Icon">
+        <h1>Your Profile</h1>
+        <img src="../profile-icon.png" id="profile-icon" alt="Profile Icon">
     </header>
-    <main>
+    <main class="container">
         <div class="column">
-        
-        <div class="profile-display" id="profile-display">
-            <h2>Profile Information</h2>
-            <p><strong>Name:</strong> <span id="display-name"></span></p>
-            <p><strong>Surname:</strong> <span id="display-surname"></span></p>
-            <p><strong>Age:</strong> <span id="display-age"></span></p>
-            <p><strong>Email:</strong> <span id="display-email"></span></p>
-            <button id="edit-profile-button">Edit</button>
+            <div class="profile-display" id="profile-display">
+                <h2>Profile Information</h2>
+                <p><strong>Name:</strong> <span id="display-name"></span></p>
+                <p><strong>Surname:</strong> <span id="display-surname"></span></p>
+                <p><strong>Age:</strong> <span id="display-age"></span></p>
+                <p><strong>Email:</strong> <span id="display-email"></span></p>
+                <button id="edit-profile-button">Edit</button>
+            </div>
+            <form class="profile-display" id="profile-form" style="display:none;">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name"><br><br>
+                <label for="surname">Surname:</label>
+                <input type="text" id="surname" name="surname"><br><br>
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age"><br><br>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email"><br><br>
+                <button type="button" id="save-profile-button">Save Profile</button>
+            </form>
         </div>
-        <form class="profile-display" id="profile-form" style="display:none;">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name"><br><br>
-            <label for="surname">Surname:</label>
-            <input type="text" id="surname" name="surname"><br><br>
-            <label for="age">Age:</label>
-            <input type="number" id="age" name="age"><br><br>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email"><br><br>
-            <button type="button" id="save-profile-button">Save Profile</button>
-        </form>
-    </div>
-        <div class="button-container">
-            <button onclick="window.location.href='../index.html'">Back to Home</button>
+        <div class="column">
+            <div class="group-container">
+                <h2>Create Player Group</h2>
+                <label for="group-name">Group Name:</label>
+                <input type="text" id="group-name" name="group-name"><br><br>
+                <label for="character-select">Select Character:</label>
+                <select id="character-select">
+                    <!-- Options will be dynamically added here -->
+                </select><br><br>
+                <button id="invite-button">Invite</button>
+            </div>
+            <div class="group-container" id="selected-character">
+                <!-- Selected Character Display -->
+            </div>
         </div>
     </main>
+    <div class="button-container">
+        <button onclick="window.location.href='../index.html'">Back to Home</button>
+    </div>
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-                // Call the function after defining it
-    checkSignInStatus();
+            // Call the function after defining it
+            checkSignInStatus();
             // Load profile data from local storage if it exists
             function loadProfileData() {
                 if (localStorage.getItem('profileData')) {
@@ -116,16 +142,130 @@
                 $('#profile-form').show();
             });
         });
-            // Define the checkSignInStatus function
-            function checkSignInStatus() {
+
+        
+// Load characters from local storage and populate the dropdown
+function loadCharacters() {
+                const characters = JSON.parse(localStorage.getItem('characters')) || [];
+                const characterSelect = $('#character-select');
+                characterSelect.empty();
+                if (characters.length === 0) {
+                    characterSelect.append('<option disabled selected>No characters created yet</option>');
+                } else {
+                    characters.forEach(function(character) {
+                        characterSelect.append(`<option value="${character.id}">${character.name} - ${character.experiencePoints} XP</option>`);
+                    });
+                }}
+
+// Load characters when the page loads
+loadCharacters();
+
+// Create Player Group Popup
+$('#create-group-button').click(function() {
+    // Reset form fields
+    $('#group-name').val('');
+    $('#character-select').val('');
+    $('#create-group-popup').show();
+});
+
+// Save Player Group
+$('#save-group-button').click(function() {
+    const groupName = $('#group-name').val();
+    const selectedCharacterId = $('#character-select').val();
+    const selectedCharacter = JSON.parse(localStorage.getItem('characters')).find(character => character.id === selectedCharacterId);
+
+    // Save group to local storage
+    const groups = JSON.parse(localStorage.getItem('groups')) || [];
+    const newGroup = {
+        name: groupName,
+        character: selectedCharacter
+    };
+    groups.push(newGroup);
+    localStorage.setItem('groups', JSON.stringify(groups));
+
+    alert('Player group created successfully!');
+    $('#create-group-popup').hide();
+    // Reload page to reflect changes
+    location.reload();
+});
+
+// Populate Player Group List
+function loadPlayerGroups() {
+    const groups = JSON.parse(localStorage.getItem('groups')) || [];
+    const groupList = $('#group-list');
+    groupList.empty();
+    groups.forEach(function(group) {
+        groupList.append(`<li><a class="group-link" href="#">${group.name}</a></li>`);
+    });
+}
+
+// Load player groups when the page loads
+loadPlayerGroups();
+
+// Click event for group links
+$('#group-list').on('click', '.group-link', function() {
+    const groupName = $(this).text();
+    const groups = JSON.parse(localStorage.getItem('groups')) || [];
+    const group = groups.find(group => group.name === groupName);
+    if (group) {
+        $('#selected-group-name').text(group.name);
+        $('#selected-character-name').text(group.character.name);
+        $('#selected-character-xp').text(group.character.experiencePoints);
+        $('#edit-group-popup').show();
+    }
+});
+
+// Close edit group popup
+$('#close-edit-group-popup').click(function() {
+    $('#edit-group-popup').hide();
+});
+
+// Delete Player Group
+$('#delete-group-button').click(function() {
+    const groupName = $('#selected-group-name').text();
+    let groups = JSON.parse(localStorage.getItem('groups')) || [];
+    groups = groups.filter(group => group.name !== groupName);
+    localStorage.setItem('groups', JSON.stringify(groups));
+    $('#edit-group-popup').hide();
+    // Reload page to reflect changes
+    location.reload();
+});
+
+// Invite Friends to Group
+$('#invite-button').click(function() {
+    // Invitation email sending logic...
+    alert('Invitation sent successfully!');
+});
+
+// Define the checkSignInStatus function
+function checkSignInStatus() {
     if (!localStorage.getItem("signedIn")) {
         window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
     }
 }
-            // Remove signedIn from localStorage when clicking the DADIcon.png
-            $('#icon').click(function() {
-                localStorage.removeItem("signedIn");
-            });
+
+// Remove signedIn from localStorage when clicking the DADIcon.png
+$('#icon').click(function() {
+    localStorage.removeItem("signedIn");
+});
+
+
+
+
+
+
+        // Define the checkSignInStatus function
+        function checkSignInStatus() {
+            if (!localStorage.getItem("signedIn")) {
+                window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
+            }
+        }
+
+        // Remove signedIn from localStorage when clicking the DADIcon.png
+        $('#icon').click(function() {
+            localStorage.removeItem("signedIn");
+        });
     </script>
 </body>
 </html>
+

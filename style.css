@@ -229,13 +229,3 @@ input[type="number"] {
     justify-content: center;
     margin-top: 20px;
 }
-
-/* Additional styles for user information */
-.profile-display {
-    background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
-    padding: 15px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    text-align: center;
-    color: white;
-}
