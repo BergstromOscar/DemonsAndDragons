@@ -26,40 +26,41 @@ body::before {
     z-index: -1; /* Ensure the pseudo-element is behind the content */
 }
 
-header {
+header, footer {
     background-color: #333;
     color: white;
     text-align: center;
-    padding: 0rem;
+    padding: 0;
     position: relative;
     font-family: 'Cinzel', serif; /* Apply the fantasy font */
     font-size: 1.5rem;
     letter-spacing: 2px;
 }
 
-h1 {
-    margin: 0px;
-}
+header {
+    h1 {
+        margin: 0;
+    }
 
-#profile-icon {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transform: translateY(-50%);
-}
-#icon{
-    position: absolute;
-    top: 50%;
-    left: 10px;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transform: translateY(-50%);
-}
+    #profile-icon, #icon {
+        position: absolute;
+        top: 50%;
+        cursor: pointer;
+        transform: translateY(-50%);
+    }
 
+    #profile-icon {
+        right: 10px;
+        width: 40px;
+        height: 40px;
+    }
+
+    #icon {
+        left: 10px;
+        width: 40px;
+        height: 40px;
+    }
+}
 
 main {
     flex: 1;
@@ -67,15 +68,6 @@ main {
     text-align: center;
 }
 
-footer {
-    color: white;
-    text-align: center;
-    padding: 0rem;
-    background-color: #333;
-    font-family: 'Cinzel', serif; /* Apply the fantasy font */
-}
-
-/* Button styles */
 button {
     background-color: rgba(47, 53, 47, 0.8); /* Slightly transparent background */
     border: none;
@@ -112,19 +104,15 @@ form {
 
 /* Popup styles */
 #character-list-popup {
+    background-color: rgba(47, 53, 47, 0.9); /* Adjusted background color */
+    padding: 20px;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(67, 75, 67, 0.95);
-    padding: 1rem;
-    margin: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    max-width: 80%;
-    color: white;
-    font-family: 'Cinzel', serif; /* Apply the fantasy font */
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Added box shadow */
+    clip-path: polygon(5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%, 0% 5%); /* Eight-sided shape */
 }
 
 #character-list-popup ul {
@@ -144,74 +132,94 @@ form {
 }
 
 .delete-character-button {
-    float: right;
-    background-color: #ff7f7f;
+    padding: 5px 10px;
     border: none;
-    padding: 0.5rem;
+    background-color: transparent;
+    color: red; /* Make delete buttons red */
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 5px;
-    font-family: 'Cinzel', serif; /* Apply the fantasy font */
+    font-size: 16px;
+    display: block;
+    margin: 0 auto;
 }
 
 .delete-character-button:hover {
-    background-color: #ff4f4f;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
 }
-        /* Center buttons and place them next to each other */
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 10px; /* Space between buttons */
-            margin-top: 20px; /* Space above buttons */
-        }
-        /* Style for the form inputs */
-        #stats-form {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            max-width: 75%;
-            margin: auto; /* Center the form */
-        }
-        .column {
-            width: 48%; /* Adjusted width for better spacing */
-        }
-        .section {
-            background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-        .attribute-field {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        label {
-            display: inline-block;
-            width: 45%;
-            font-weight: bold;
-            color: white;
-        }
-        input[type="text"],
-        input[type="number"],
-        input[type="email"] {
-            width: 55%; /* Adjusted width for better spacing */
-            padding: 5px;
-            box-sizing: border-box;
-            border: none;
-            border-bottom: 2px solid white;
-            background: none;
-            color: white;
-            outline: none;
-        }
-        input[type="number"] {
-            text-align: right;
-        }
-        h2 {
-            color: white;
-        }
-        #last-saved{
-            float: right;
-            
-        }
+
+.last-saved {
+    color: white;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Space between buttons */
+    margin-top: 20px; /* Space above buttons */
+}
+
+#stats-form {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 75%;
+    margin: auto; /* Center the form */
+}
+
+.column {
+    width: 48%; /* Adjusted width for better spacing */
+}
+
+.section {
+    background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    clip-path: polygon(5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%, 0% 5%); /* Eight-sided shape */
+}
+
+.attribute-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+label {
+    display: inline-block;
+    width: 45%;
+    font-weight: bold;
+    color: white;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 55%; /* Adjusted width for better spacing */
+    padding: 5px;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 2px solid white;
+    background: none;
+    color: white;
+    outline: none;
+}
+
+input[type="number"] {
+    text-align: right;
+}
+
+.save-popup {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(47, 53, 47, 0.9);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 10000;
+}
