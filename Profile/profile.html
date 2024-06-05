@@ -33,7 +33,9 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <header>
+        <a href="../SignInSignUp/signin.html">
             <img src="../DADIcon.png" id="icon" alt="Main Icon">
+        </a>
             <h1>Your Profile</h1>
             <img src="../profile-icon.png" id="profile-icon" alt="Profile Icon">
     </header>
@@ -120,6 +122,10 @@
         window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
     }
 }
+            // Remove signedIn from localStorage when clicking the DADIcon.png
+            $('#icon').click(function() {
+                localStorage.removeItem("signedIn");
+            });
     </script>
 </body>
 </html>

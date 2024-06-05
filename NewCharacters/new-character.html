@@ -22,7 +22,9 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <header>
-        <img src="../DADIcon.png" id="icon" alt="Main Icon">
+        <a href="../SignInSignUp/signin.html">
+            <img src="../DADIcon.png" id="icon" alt="Main Icon">
+        </a>
         <h1>New Character</h1>     
         <img src="../profile-icon.png" id="profile-icon" alt="Profile Icon">    
     </header>
@@ -153,7 +155,10 @@
                                 (now.getMonth() + 1).toString().padStart(2, '0') + '/' + now.getDate().toString().padStart(2, '0') + '/' + now.getFullYear();
             $("#last-saved").text("Last saved: " + formattedTime);
         }
-
+// Remove signedIn from localStorage when clicking the DADIcon.png
+$('#icon').click(function() {
+                localStorage.removeItem("signedIn");
+            });
 
     </script>
 </body>

@@ -18,7 +18,9 @@
         input[type="password"],
         input[type="submit"],
         #switch-signup,
-        #forgot-password {
+        #forgot-password,
+        #switch-login,
+        #reset-email {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px; /* Adjusted margin */
@@ -42,10 +44,10 @@
         }
         h2 {
             color: white; /* Sign in text color */
-            align-self: ;
         }
         #switch-signup,
-        #forgot-password {
+        #forgot-password,
+        #switch-login {
             background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
             border: none;
             transition: background-color 0.3s ease, transform 0.3s ease;
@@ -57,11 +59,36 @@
             display: inline-block; /* Display as inline-block */
         }
         #switch-signup:hover,
-        #forgot-password:hover {
+        #forgot-password:hover,
+        #switch-login {
             background-color: rgba(24, 27, 24, 0.8); /* Darker and slightly transparent on hover */
             transform: scale(1.05);
             color: white;
             text-decoration: none;
+        }
+        /* Popup Styling */
+        .popup {
+            background-color: rgba(47, 53, 47, 0.9); /* Adjusted background color */
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Added box shadow */
+    clip-path: polygon(5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%, 0% 5%); /* Eight-sided shape */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -91,68 +118,95 @@
         <button id="forgot-password">Forgot Password?</button>
     </div>
 
+    <!-- Popup for Forgotten Password (initially hidden) -->
+<div id="forgotPasswordPopup" class="popup" style="display: none;">
+    <div class="popup-content">
+        <span class="close">&times;</span>
+        <h2>Reset Password</h2>
+        <input type="email" id="reset-email" placeholder="Enter your email" required>
+        <button id="reset-password-submit">Submit</button>
+    </div>
+</div>
+
     <script>
-        $(document).ready(function() {
-            // Define the checkSignInStatus function
-            function checkSignInStatus() {
-                if (!localStorage.getItem("signedIn") && window.location.pathname.includes("SignInSignUp/signin.html")) {
-                    window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
-                }
-            }
+       $(document).ready(function() {
+    // Define the checkSignInStatus function
+    function checkSignInStatus() {
+        if (!localStorage.getItem("signedIn") && window.location.pathname.includes("SignInSignUp/signin.html")) {
+            window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
+        }
+    }
 
-            // Call the function after defining it
-            checkSignInStatus();
+    // Call the function after defining it
+    checkSignInStatus();
 
-            // Switch between sign-in and sign-up forms
-            $("#switch-signup").click(function(e) {
-                e.preventDefault();
-                $("#login-form").hide();
-                $("#signup-form").show();
-                $("#switch-message").html("Already have an account? <br><button id='switch-login'>Sign In</button><button id='forgot-password'>Forgot Password?</button>");
-            });
+    // Switch between sign-in and sign-up forms
+    $(document).on("click", "#switch-signup", function(e) {
+        e.preventDefault();
+        $("#login-form").hide();
+        $("#signup-form").show();
+        $("#switch-message").html("Already have an account? <br><button id='switch-login'>Sign In</button><button id='forgot-password'>Forgot Password?</button>");
+    });
 
-            $(document).on("click", "#switch-login", function(e) {
-                e.preventDefault;
-                $("#login-form").show();
-                $("#signup-form").hide();
-                $("#switch-message").html("Don't have an account?  <br><button id='switch-signup'>Sign Up</button><button id='forgot-password'>Forgot Password?</button>");
-            });
+    $(document).on("click", "#switch-login", function(e) {
+        e.preventDefault();
+        $("#login-form").show();
+        $("#signup-form").hide();
+        $("#switch-message").html("Don't have an account?  <br><button id='switch-signup'>Sign Up</button><button id='forgot-password'>Forgot Password?</button>");
+    });
 
-            // Handle sign in
-            $("#login-form").submit(function(e) {
-                e.preventDefault();
-                var username = $("#login-username").val();
-                var password = $("#login-password").val();
-                var storedPassword = localStorage.getItem(username);
-                if (storedPassword === password) {
-                    localStorage.setItem("signedIn", "true");
-                    $("#login-message").text("Successfully signed in.");
-                    window.location.href = "../index.html";
-                } else {
-                    $("#login-message").text("Incorrect username or password.");
-                }
-            });
+    // Handle sign in
+    $("#login-form").submit(function(e) {
+        e.preventDefault();
+        var username = $("#login-username").val();
+        var password = $("#login-password").val();
+        var storedPassword = localStorage.getItem(username);
+        if (storedPassword === password) {
+            localStorage.setItem("signedIn", "true");
+            $("#login-message").text("Successfully signed in.");
+            window.location.href = "../index.html";
+        } else {
+            $("#login-message").text("Incorrect username or password.");
+        }
+    });
 
-            // Handle sign up
-            $("#signup-form").submit(function(e) {
-                e.preventDefault();
-                var username = $("#signup-username").val();
-                var password = $("#signup-password").val();
-                if (localStorage.getItem(username)) {
-                    $("#signup-message").text("Username already exists. Please choose another one.");
-                } else {
-                    localStorage.setItem(username, password);
-                    localStorage.setItem("signedIn", "true");
-                    $("#signup-message").text("Successfully signed up. You can now sign in.");
-                }
-            });
+    // Handle sign up
+    $("#signup-form").submit(function(e) {
+        e.preventDefault();
+        var username = $("#signup-username").val();
+        var password = $("#signup-password").val();
+        if (localStorage.getItem(username)) {
+            $("#signup-message").text("Username already exists. Please choose another one.");
+        } else {
+            localStorage.setItem(username, password);
+            localStorage.setItem("signedIn", "true");
+            $("#signup-message").text("Successfully signed up. You can now sign in.");
+        }
+    });
 
-            // Handle forgot password
-            $("#forgot-password").click(function(e) {
-                e.preventDefault();
-                // Add your password recovery logic here
-            });
-        });
+    // Handle forgot password
+    $(document).on("click", "#forgot-password", function(e) {
+        e.preventDefault();
+        // Show the password reset popup
+        $("#forgotPasswordPopup").css("display", "block");
+    });
+
+    // Close the password reset popup when the close button is clicked
+    $(document).on("click", ".close", function() {
+        $("#forgotPasswordPopup").css("display", "none");
+    });
+
+    // Handle password reset form submission
+    $(document).on("click", "#reset-password-submit", function(e) {
+        e.preventDefault();
+        // Add your password reset logic here
+        var email = $("#reset-email").val();
+        // Display a confirmation message or perform password reset operation
+        alert("Password reset link sent to " + email);
+        // Close the popup
+        $("#forgotPasswordPopup").css("display", "none");
+    });
+});
     </script>
 
 </body>

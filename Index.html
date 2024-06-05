@@ -26,7 +26,9 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <header>
-        <img src="DADIcon.png" id="icon" alt="Main Icon">
+        <a href="SignInSignUp/signin.html">
+            <img src="DADIcon.png" id="icon" alt="Main Icon">
+        </a>
         <h1>Demons And Dragons</h1>
         <img src="profile-icon.png" id="profile-icon" alt="Profile Icon">
     </header>
@@ -43,7 +45,8 @@
             // Define the checkSignInStatus function
             function checkSignInStatus() {
                 if (!localStorage.getItem("signedIn")) {
-                    window.location.href = "SignInSignUp/signin.html"; // Redirect to sign-in/sign-up page
+                    // Redirect to sign-in/sign-up page
+                    window.location.href = "SignInSignUp/signin.html";
                 }
             }
     
@@ -59,6 +62,11 @@
             });
             $('#load-character-button').click(function() {
                 window.location.href = 'LoadCharacter/load-character.html';
+            });
+            
+            // Remove signedIn from localStorage when clicking the DADIcon.png
+            $('#icon').click(function() {
+                localStorage.removeItem("signedIn");
             });
         });
     </script>
