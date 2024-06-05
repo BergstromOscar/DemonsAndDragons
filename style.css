@@ -50,6 +50,16 @@ h1 {
     cursor: pointer;
     transform: translateY(-50%);
 }
+#icon{
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
 
 main {
     flex: 1;
