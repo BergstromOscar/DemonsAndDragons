@@ -208,3 +208,6 @@ form {
         input[type="number"] {
             text-align: right;
         }
+        h2 {
+            color: white;
+        }

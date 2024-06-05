@@ -103,9 +103,24 @@
             justify-content: center;
             margin-top: 20px;
         }
-        h2{
+        .save-popup {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(47, 53, 47, 0.9);
             color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 10000;
         }
+        .last-saved {
+            color: white;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
     </style>
 </head>
 <body>
@@ -133,6 +148,8 @@
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
     </footer>
+    <div class="save-popup" id="save-popup">Data has been saved!</div>
+    <div class="last-saved" id="last-saved">Last saved: N/A</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -141,14 +158,14 @@
                 window.location.href = '../Profile/profile.html';
             });
         });
-    
+
         function loadXMLDoc(filename) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", filename, false);
             xhttp.send();
             return xhttp.responseXML;
         }
-    
+
         function displayCharacterList() {
             var characterList = getCharacterList();
             var popup = $("<div>").attr("id", "character-list-popup").css("display", "block");
@@ -167,7 +184,7 @@
             `);
             $("body").append(popup);
             $("#main-button-container").hide(); // Hide the main button container when the popup is shown
-    
+
             // Event listener for loading character
             $('.character-name').click(function() {
                 var characterID = $(this).attr('data-character-id');
@@ -175,7 +192,7 @@
                 populateStatsForm(characterData);
                 closePopup();
             });
-    
+
             // Event listener for deleting character
             $('.delete-character-button').click(function() {
                 var characterID = $(this).attr('data-character-id');
@@ -187,7 +204,7 @@
                 }
             });
         }
-    
+
         function getCharacterList() {
             var characterList = [];
             for (var i = 0; i < localStorage.length; i++) {
@@ -203,29 +220,29 @@
             }
             return characterList;
         }
-    
+
         function closePopup() {
             $('#character-list-popup').remove();
             $("#main-button-container").show(); // Show the main button container when the popup is closed
         }
-    
+
         function populateStatsForm(characterData) {
             var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.xml');
             var character = $(xmlDoc).find("Character").eq(0);
             var leftColumn = $("#left-column");
             var rightColumn = $("#right-column");
-    
+
             character.children().each(function() {
                 var sectionTitle = $("<h2>").text($(this).prop("tagName"));
-    
+
                 var container = $("<div>").addClass("section");
                 container.append(sectionTitle);
-    
+
                 $(this).children().each(function() {
                     var inputField = $("<div>").addClass("attribute-field");
-                    
+
                     var label = $("<label>").attr("for", $(this).prop("tagName")).text($(this).prop("tagName") + ":");
-    
+
                     var input = $("<input>").attr("id", $(this).prop("tagName"));
                     if (!isNaN($(this).text()) && $(this).text().trim() !== "") {
                         input.attr("type", "number");
@@ -233,17 +250,19 @@
                         input.attr("type", "text");
                     }
                     input.val(characterData[$(this).prop("tagName")]);
-    
+
                     input.on('input', function() {
                         characterData[$(this).prop("tagName")] = $(this).val();
                         localStorage.setItem('character-' + characterData["Name"], JSON.stringify(characterData));
+                        showSavePopup();
+                        updateLastSaved();
                     });
-    
+
                     inputField.append(label);
                     inputField.append(input);
                     container.append(inputField);
                 });
-    
+
                 if ($(this).prop("tagName") === "Skills") {
                     rightColumn.append(container);
                 } else {
@@ -251,7 +270,22 @@
                 }
             });
         }
-    
+
+        function showSavePopup() {
+            var savePopup = $("#save-popup");
+            savePopup.fadeIn();
+            setTimeout(function() {
+                savePopup.fadeOut();
+            }, 3000); // Show the popup for 3 seconds
+        }
+
+        function updateLastSaved() {
+            var now = new Date();
+            var formattedTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ', ' +
+                                (now.getMonth() + 1).toString().padStart(2, '0') + '/' + now.getDate().toString().padStart(2, '0') + '/' + now.getFullYear();
+            $("#last-saved").text("Last saved: " + formattedTime);
+        }
+
         function checkSignInStatus() {
             if (!localStorage.getItem("signedIn")) {
                 window.location.href = "../SignInSignUp/signin.html"; // Redirect to sign-in/sign-up page
