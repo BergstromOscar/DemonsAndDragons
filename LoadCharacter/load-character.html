@@ -1,91 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PVQPC4Q6');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Load Character</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Center buttons and place them next to each other */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Space between buttons */
+            margin-top: 20px; /* Space above buttons */
+        }
+        /* Style for the form inputs */
+        #stats-form {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            max-width: 75%;
+            margin: auto; /* Center the form */
+        }
+        .column {
+            width: 48%; /* Adjusted width for better spacing */
+        }
+        .section {
+            background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .attribute-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 45%;
+            font-weight: bold;
+            color: white;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 55%; /* Adjusted width for better spacing */
+            padding: 5px;
+            box-sizing: border-box;
+            border: none;
+            border-bottom: 2px solid white;
+            background: none;
+            color: white;
+            outline: none;
+        }
+        input[type="number"] {
+            text-align: right;
+        }
+        .load-character-button, .delete-character-button {
+            padding: 5px 10px;
+            border: none;
+            background-color: transparent;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .load-character-button:hover, .delete-character-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+        }
+        .delete-character-button {
+            font-size: 16px;
+            color: red; /* Make delete buttons red */
+        }
+        #character-list-popup {
+    background-color: rgba(47, 53, 47, 0.9); /* Adjusted background color */
+    border-radius: 8px;
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Added box shadow */
+}
+    </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVQPC4Q6"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <header>
         <h1>Load Character</h1>
     </header>
-    <main>
-        <h2>Select a Character to Load or Delete</h2>
-        <div id="character-list-popup">
-            <ul id="character-list"></ul>
-            <button id="close-popup-button">Close</button>
+    <main id="stats-form">
+        <div class="column" id="left-column">
+            <!-- Left column content will be dynamically added here -->
         </div>
-        <form id="dnd-stats-form" style="display:none;">
-            <label for="character-name">Character Name:</label>
-            <input type="text" id="character-name" name="character-name" readonly><br><br>
-            <label for="strength">Strength:</label>
-            <input type="number" id="strength" name="strength"><br><br>
-            <label for="dexterity">Dexterity:</label>
-            <input type="number" id="dexterity" name="dexterity"><br><br>
-            <label for="constitution">Constitution:</label>
-            <input type="number" id="constitution" name="constitution"><br><br>
-            <label for="intelligence">Intelligence:</label>
-            <input type="number" id="intelligence" name="intelligence"><br><br>
-            <label for="wisdom">Wisdom:</label>
-            <input type="number" id="wisdom" name="wisdom"><br><br>
-            <label for="charisma">Charisma:</label>
-            <input type="number" id="charisma" name="charisma"><br><br>
-            <button type="button" id="load-character-button">Load Character</button>
-        </form>
-        <button onclick="window.location.href='../index.html'">Back to Home</button>
+        <div class="column" id="right-column">
+            <!-- Right column content will be dynamically added here -->
+        </div>
     </main>
+    <div class="button-container">
+        <button onclick="window.location.href='../index.html'">Back to Home</button> <!-- Back to Home button -->
+    </div>
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Show the list of characters in a popup
-            function refreshCharacterList() {
-                $('#character-list').empty();
-                for (let i = 0; i < localStorage.length; i++) {
-                    const key = localStorage.key(i);
-                    if (key.startsWith('character ')) {
-                        const characterName = key.replace('character ', '');
-                        $('#character-list').append(
-                            '<li>' + characterName + ' <button class="delete-character-button" data-character-name="' + characterName + '">Delete</button></li>'
-                        );
-                    }
+            displayCharacterList();
+        });
+    
+        function loadXMLDoc(filename) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", filename, false);
+            xhttp.send();
+            return xhttp.responseXML;
+        }
+    
+        function displayCharacterList() {
+            var characterList = getCharacterList();
+            var popup = $("<div>").attr("id", "character-list-popup").css("display", "block");
+            popup.html(`
+                <h2>Select a Character to Load or Delete</h2>
+                <ul id="character-list">
+                    ${characterList.map(character => `<li>${character.name} <button class="load-character-button" data-character-id="${character.id}">Load</button> <button class="delete-character-button" data-character-id="${character.id}">X</button></li>`).join('')}
+                </ul>
+                <button id="close-popup-button">Close</button>
+            `);
+            $("body").append(popup);
+    
+            // Event listener for loading character
+            $('.load-character-button').click(function() {
+                var characterID = $(this).attr('data-character-id');
+                var characterData = JSON.parse(localStorage.getItem('character-' + characterID));
+                populateStatsForm(characterData);
+                closePopup();
+            });
+    
+            // Event listener for deleting character
+            $('.delete-character-button').click(function() {
+                var characterID = $(this).attr('data-character-id');
+                var confirmation = confirm("Are you sure you want to delete this character?");
+                if (confirmation) {
+                    localStorage.removeItem('character-' + characterID);
+                    closePopup();
+                    displayCharacterList(); // Refresh character list after deletion
+                }
+            });
+    
+            // Close popup event listener
+            $('#close-popup-button').click(function() {
+                closePopup();
+            });
+        }
+    
+        function getCharacterList() {
+            var characterList = [];
+            for (var i = 0; i < localStorage.length; i++) {
+                var key = localStorage.key(i);
+                if (key.startsWith('character-')) {
+                    var characterData = JSON.parse(localStorage.getItem(key));
+                    var character = {
+                        id: key.replace('character-', ''),
+                        name: characterData.Name
+                    };
+                    characterList.push(character);
                 }
             }
-            refreshCharacterList();
-            $('#character-list-popup').show();
-
-            // Close the character list popup
-            $('#close-popup-button').click(function() {
-                $('#character-list-popup').hide();
-            });
-
-            // Load the selected character data into the form
-            $(document).on('click', '#character-list li', function(event) {
-                if (!$(event.target).hasClass('delete-character-button')) {
-                    const characterName = $(this).contents().get(0).nodeValue.trim();
-                    const characterData = JSON.parse(localStorage.getItem('character ' + characterName));
-                    $('#character-name').val(characterData.name);
-                    $('#strength').val(characterData.strength);
-                    $('#dexterity').val(characterData.dexterity);
-                    $('#constitution').val(characterData.constitution);
-                    $('#intelligence').val(characterData.intelligence);
-                    $('#wisdom').val(characterData.wisdom);
-                    $('#charisma').val(characterData.charisma);
-                    $('#character-list-popup').hide();
-                    $('#dnd-stats-form').show();
+            return characterList;
+        }
+    
+        function closePopup() {
+            $('#character-list-popup').remove();
+        }
+    
+        function populateStatsForm(characterData) {
+            var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.xml');
+            var character = $(xmlDoc).find("Character").eq(0);
+            var leftColumn = $("#left-column");
+            var rightColumn = $("#right-column");
+    
+            character.children().each(function() {
+                var sectionTitle = $("<h2>").text($(this).prop("tagName"));
+    
+                var container = $("<div>").addClass("section");
+                container.append(sectionTitle);
+    
+                $(this).children().each(function() {
+                    var inputField = $("<div>").addClass("attribute-field");
+                    
+                    var label = $("<label>").attr("for", $(this).prop("tagName")).text($(this).prop("tagName") + ":");
+    
+                    var input = $("<input>").attr("id", $(this).prop("tagName"));
+                    if (!isNaN($(this).text()) && $(this).text().trim() !== "") {
+                        input.attr("type", "number");
+                    } else {
+                        input.attr("type", "text");
+                    }
+                    input.val(characterData[$(this).prop("tagName")]);
+    
+                    input.on('input', function() {
+                        characterData[$(this).prop("tagName")] = $(this).val();
+                        localStorage.setItem('character-' + characterData["Name"], JSON.stringify(characterData));
+                    });
+    
+                    inputField.append(label);
+                    inputField.append(input);
+                    container.append(inputField);
+                });
+    
+                if ($(this).prop("tagName") === "Skills") {
+                    rightColumn.append(container);
+                } else {
+                    leftColumn.append(container);
                 }
             });
-
-            // Delete character from local storage
-            $(document).on('click', '.delete-character-button', function(event) {
-                const characterName = $(this).data('character-name');
-                localStorage.removeItem('character ' + characterName);
-                refreshCharacterList();
-            });
-        });
+        }
+        function checkSignInStatus() {
+    if (!localStorage.getItem("signedIn")) {
+        window.location.href = "../SignInSignUp/signin.html"; // Redirect to sign-in/sign-up page
+    }
+}
     </script>
-</body>
+    
+    </body>
 </html>
+

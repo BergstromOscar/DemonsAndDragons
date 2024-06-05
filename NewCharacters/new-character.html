@@ -1,55 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PVQPC4Q6');</script>
+    <!-- End Google Tag Manager -->
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Character</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        /* Center buttons and place them next to each other */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Space between buttons */
+            margin-top: 20px; /* Space above buttons */
+        }
+        /* Style for the form inputs */
+        #stats-form {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            max-width: 75%;
+            margin: auto; /* Center the form */
+        }
+        .column {
+            width: 48%; /* Adjusted width for better spacing */
+        }
+        .section {
+            background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .attribute-field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        label {
+            display: inline-block;
+            width: 45%;
+            font-weight: bold;
+            color: white;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: 55%; /* Adjusted width for better spacing */
+            padding: 5px;
+            box-sizing: border-box;
+            border: none;
+            border-bottom: 2px solid white;
+            background: none;
+            color: white;
+            outline: none;
+        }
+        input[type="number"] {
+            text-align: right;
+        }
+    </style>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PVQPC4Q6"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <header>
         <h1>New Character</h1>
     </header>
     <main id="stats-form">
-        <!-- Stats will be dynamically added here -->
+        <div class="column" id="left-column">
+            <!-- Left column content will be dynamically added here -->
+        </div>
+        <div class="column" id="right-column">
+            <!-- Right column content will be dynamically added here -->
+        </div>
     </main>
-    <button onclick="saveStats()">Save</button>
-    <button onclick="window.location.href='../index.html'">Back to Home</button>
+    <div class="button-container">
+        <button onclick="saveStats()">Save</button>
+        <button onclick="window.location.href='../index.html'">Back to Home</button>
+    </div>
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
     </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        $(document).ready(function() {
             displayStatsForm();
         });
-
-        function displayStatsForm() {
-            var statsForm = document.getElementById("stats-form");
-            for (var attributeName in characterStructure) {
-                var inputField = document.createElement("div");
-                var label = document.createElement("label");
-                label.setAttribute("for", attributeName);
-                label.textContent = attributeName + ":";
-                var input = document.createElement("input");
-                input.setAttribute("type", "text");
-                input.setAttribute("id", attributeName);
-                input.setAttribute("value", "");
-                inputField.appendChild(label);
-                inputField.appendChild(input);
-                statsForm.appendChild(inputField);
-            }
+    
+        function loadXMLDoc(filename) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", filename, false);
+            xhttp.send();
+            return xhttp.responseXML;
         }
-
-        function saveStats() {
-            var inputs = document.querySelectorAll("#stats-form input");
-            inputs.forEach(function(input) {
-                var attributeName = input.getAttribute("id");
-                var attributeValue = input.value;
-                // Implement your save/update logic here
-                console.log("Attribute Name: " + attributeName + ", Attribute Value: " + attributeValue);
+    
+        function displayStatsForm() {
+            var xmlDoc = loadXMLDoc('../CharacterStructure/DOD.xml');
+            var character = $(xmlDoc).find("Character").eq(0);
+            var leftColumn = $("#left-column");
+            var rightColumn = $("#right-column");
+    
+            character.children().each(function() {
+                var sectionTitle = $("<h2>").text($(this).prop("tagName"));
+    
+                var container = $("<div>").addClass("section");
+                container.append(sectionTitle);
+    
+                $(this).children().each(function() {
+                    var inputField = $("<div>").addClass("attribute-field");
+                    
+                    var label = $("<label>").attr("for", $(this).prop("tagName")).text($(this).prop("tagName") + ":");
+    
+                    var input = $("<input>").attr("id", $(this).prop("tagName"));
+                    if (!isNaN($(this).text()) && $(this).text().trim() !== "") {
+                        input.attr("type", "number");
+                    } else {
+                        input.attr("type", "text");
+                    }
+                    input.val($(this).text());
+    
+                    inputField.append(label);
+                    inputField.append(input);
+                    container.append(inputField);
+                });
+    
+                if ($(this).prop("tagName") === "Skills") {
+                    rightColumn.append(container);
+                } else {
+                    leftColumn.append(container);
+                }
             });
         }
+    
+        function saveStats() {
+            var characterData = {};
+            $("#stats-form input").each(function() {
+                var attributeName = $(this).attr("id");
+                var attributeValue = $(this).val();
+                characterData[attributeName] = attributeValue;
+            });
+            var characterID = characterData["Name"];
+    
+            // Save character data to local storage
+            localStorage.setItem('character-' + characterID, JSON.stringify(characterData));
+        }
+        function checkSignInStatus() {
+    if (!localStorage.getItem("signedIn")) {
+        window.location.href = "../SignInSignUp/signin.html"; // Redirect to sign-in/sign-up page
+    }
+}
     </script>
-    <script src="../CharacterStructure/DOD.JS"></script>
+    
 </body>
 </html>
+
