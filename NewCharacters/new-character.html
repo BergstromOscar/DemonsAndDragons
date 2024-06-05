@@ -75,7 +75,9 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <header>
-        <h1>New Character</h1>
+        <img src="../DADIcon.png" id="icon" alt="Main Icon">
+        <h1>New Character</h1>     
+        <img src="../profile-icon.png" id="profile-icon" alt="Profile Icon">    
     </header>
     <main id="stats-form">
         <div class="column" id="left-column">
@@ -96,6 +98,9 @@
     <script>
         $(document).ready(function() {
             displayStatsForm();
+            $('#profile-icon').click(function() {
+                window.location.href = '../Profile/profile.html';
+            });
         });
     
         function loadXMLDoc(filename) {
