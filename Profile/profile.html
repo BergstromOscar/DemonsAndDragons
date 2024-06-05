@@ -38,16 +38,17 @@
             <img src="../profile-icon.png" id="profile-icon" alt="Profile Icon">
     </header>
     <main>
-        <div class="column" id="left-column">
-        <h2>Profile Information</h2>
+        <div class="column">
+        
         <div class="profile-display" id="profile-display">
+            <h2>Profile Information</h2>
             <p><strong>Name:</strong> <span id="display-name"></span></p>
             <p><strong>Surname:</strong> <span id="display-surname"></span></p>
             <p><strong>Age:</strong> <span id="display-age"></span></p>
             <p><strong>Email:</strong> <span id="display-email"></span></p>
             <button id="edit-profile-button">Edit</button>
         </div>
-        <form id="profile-form" style="display:none;">
+        <form class="profile-display" id="profile-form" style="display:none;">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name"><br><br>
             <label for="surname">Surname:</label>

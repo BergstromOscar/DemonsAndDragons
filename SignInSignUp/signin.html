@@ -1,117 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign In / Sign Up</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link rel="stylesheet" href="../style.css">
-<style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-    form {
-        max-width: 300px;
-        margin: 0 auto;
-    }
-    input[type="text"],
-    input[type="password"] {
-        width: 100%;
-        padding: 10px;
-        margin-bottom: 15px;
-        box-sizing: border-box;
-    }
-    input[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-    .message {
-        margin-top: 10px;
-        text-align: center;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In / Sign Up</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        body {
+            font-family: 'Cinzel', serif; /* Apply the fantasy font */
+        }
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="submit"],
+        #switch-signup,
+        #forgot-password {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px; /* Adjusted margin */
+            box-sizing: border-box;
+            border-radius: 20px; /* Rounded corners */
+            clip-path: polygon(15% 0%, 85% 0%, 100% 50%, 85% 100%, 15% 100%, 0% 50%); /* Six-sided shape */
+            font-family: 'Cinzel', serif; /* Apply the fantasy font */
+            color: white; /* Text color */
+            background-color: rgba(47, 53, 47, 0.8); /* Background color */
+            border: none; /* Remove border */
+            outline: none; /* Remove outline */
+            text-align: center; /* Center placeholder text */
+            cursor: pointer; /* Change cursor to pointer */
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+        }
+        .message {
+            text-align: center;
+            color: white; /* Message text color */
+        }
+        h2 {
+            color: white; /* Sign in text color */
+            align-self: ;
+        }
+        #switch-signup,
+        #forgot-password {
+            background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
+            border: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            max-width: 300px; /* Adjusted maximum width */
+            font-family: 'Cinzel', serif; /* Apply the fantasy font */
+            height: auto; /* Adjusted height */
+            padding: 10px 0; /* Adjust padding */
+            margin-top: 5px; /* Adjusted margin top */
+            display: inline-block; /* Display as inline-block */
+        }
+        #switch-signup:hover,
+        #forgot-password:hover {
+            background-color: rgba(24, 27, 24, 0.8); /* Darker and slightly transparent on hover */
+            transform: scale(1.05);
+            color: white;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
+    <header>
+        <h1>Demons And Dragons</h1>
+    </header>
+    <form id="login-form">
+        <h2>Sign In</h2>
+        <input type="text" id="login-username" placeholder="Username" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <input type="submit" value="Sign In">
+        <p class="message" id="login-message"></p>
+    </form>
 
-<form id="login-form">
-    <h2>Sign In</h2>
-    <input type="text" id="login-username" placeholder="Username" required>
-    <input type="password" id="login-password" placeholder="Password" required>
-    <input type="submit" value="Sign In">
-    <p class="message" id="login-message"></p>
-</form>
+    <form id="signup-form" style="display: none;">
+        <h2>Sign Up</h2>
+        <input type="text" id="signup-username" placeholder="Username" required>
+        <input type="password" id="signup-password" placeholder="Password" required>
+        <input type="submit" value="Sign Up">
+        <p class="message" id="signup-message"></p>
+    </form>
 
-<form id="signup-form" style="display: none;">
-    <h2>Sign Up</h2>
-    <input type="text" id="signup-username" placeholder="Username" required>
-    <input type="password" id="signup-password" placeholder="Password" required>
-    <input type="submit" value="Sign Up">
-    <p class="message" id="signup-message"></p>
-</form>
+    <div class="message" id="switch-message">Don't have an account? 
+        <br>
+        <button id="switch-signup">Sign Up</button>
+        <button id="forgot-password">Forgot Password?</button>
+    </div>
 
-<div class="message" id="switch-message">Don't have an account? <a href="#" id="switch-signup">Sign Up</a></div>
+    <script>
+        $(document).ready(function() {
+            // Define the checkSignInStatus function
+            function checkSignInStatus() {
+                if (!localStorage.getItem("signedIn") && window.location.pathname.includes("SignInSignUp/signin.html")) {
+                    window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
+                }
+            }
 
-<script>
-$(document).ready(function() {
-    // Define the checkSignInStatus function
-    function checkSignInStatus() {
-    if (!localStorage.getItem("signedIn") && window.location.pathname.includes("SignInSignUp/signin.html")) {
-        window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
-    }
-}
+            // Call the function after defining it
+            checkSignInStatus();
 
-    // Call the function after defining it
-    checkSignInStatus();
+            // Switch between sign-in and sign-up forms
+            $("#switch-signup").click(function(e) {
+                e.preventDefault();
+                $("#login-form").hide();
+                $("#signup-form").show();
+                $("#switch-message").html("Already have an account? <br><button id='switch-login'>Sign In</button><button id='forgot-password'>Forgot Password?</button>");
+            });
 
-    // Switch between sign-in and sign-up forms
-    $("#switch-signup").click(function(e) {
-        e.preventDefault();
-        $("#login-form").hide();
-        $("#signup-form").show();
-        $("#switch-message").html("Already have an account? <a href='#' id='switch-login'>Sign In</a>");
-    });
+            $(document).on("click", "#switch-login", function(e) {
+                e.preventDefault;
+                $("#login-form").show();
+                $("#signup-form").hide();
+                $("#switch-message").html("Don't have an account?  <br><button id='switch-signup'>Sign Up</button><button id='forgot-password'>Forgot Password?</button>");
+            });
 
-    $(document).on("click", "#switch-login", function(e) {
-        e.preventDefault();
-        $("#login-form").show();
-        $("#signup-form").hide();
-        $("#switch-message").html("Don't have an account? <a href='#' id='switch-signup'>Sign Up</a>");
-    });
+            // Handle sign in
+            $("#login-form").submit(function(e) {
+                e.preventDefault();
+                var username = $("#login-username").val();
+                var password = $("#login-password").val();
+                var storedPassword = localStorage.getItem(username);
+                if (storedPassword === password) {
+                    localStorage.setItem("signedIn", "true");
+                    $("#login-message").text("Successfully signed in.");
+                    window.location.href = "../index.html";
+                } else {
+                    $("#login-message").text("Incorrect username or password.");
+                }
+            });
 
-    // Handle sign in
-    $("#login-form").submit(function(e) {
-        e.preventDefault();
-        var username = $("#login-username").val();
-        var password = $("#login-password").val();
-        var storedPassword = localStorage.getItem(username);
-        if (storedPassword === password) {
-            localStorage.setItem("signedIn", "true");
-            $("#login-message").text("Successfully signed in.");
-            window.location.href = "../index.html";
-        } else {
-            $("#login-message").text("Incorrect username or password.");
-        }
-    });
+            // Handle sign up
+            $("#signup-form").submit(function(e) {
+                e.preventDefault();
+                var username = $("#signup-username").val();
+                var password = $("#signup-password").val();
+                if (localStorage.getItem(username)) {
+                    $("#signup-message").text("Username already exists. Please choose another one.");
+                } else {
+                    localStorage.setItem(username, password);
+                    localStorage.setItem("signedIn", "true");
+                    $("#signup-message").text("Successfully signed up. You can now sign in.");
+                }
+            });
 
-    // Handle sign up
-    $("#signup-form").submit(function(e) {
-        e.preventDefault();
-        var username = $("#signup-username").val();
-        var password = $("#signup-password").val();
-        if (localStorage.getItem(username)) {
-            $("#signup-message").text("Username already exists. Please choose another one.");
-        } else {
-            localStorage.setItem(username, password);
-            localStorage.setItem("signedIn", "true");
-            $("#signup-message").text("Successfully signed up. You can now sign in.");
-        }
-    });
-});
-</script>
+            // Handle forgot password
+            $("#forgot-password").click(function(e) {
+                e.preventDefault();
+                // Add your password recovery logic here
+            });
+        });
+    </script>
 
 </body>
 </html>
+
