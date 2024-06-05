@@ -37,7 +37,7 @@
             background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
             padding: 15px;
             margin-bottom: 20px;
-            border-radius: 8px;
+            clip-path: polygon(5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%, 0% 5%); /* Eight-sided shape */
         }
         .attribute-field {
             display: flex;
@@ -89,7 +89,6 @@
         }
         #character-list-popup {
             background-color: rgba(47, 53, 47, 0.9); /* Adjusted background color */
-            border-radius: 8px;
             padding: 20px;
             position: fixed;
             top: 50%;
@@ -97,6 +96,15 @@
             transform: translate(-50%, -50%);
             z-index: 9999;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Added box shadow */
+            clip-path: polygon(5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%, 0% 5%); /* Eight-sided shape */
+        }
+        .main-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        h2{
+            color: white;
         }
     </style>
 </head>
@@ -119,6 +127,9 @@
             <!-- Right column content will be dynamically added here -->
         </div>
     </main>
+    <div class="main-button-container" id="main-button-container">
+        <button onclick="window.location.href='../index.html'">Back to Home</button> <!-- Back to Home button -->
+    </div>
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
     </footer>
@@ -155,6 +166,7 @@
                 </div>
             `);
             $("body").append(popup);
+            $("#main-button-container").hide(); // Hide the main button container when the popup is shown
     
             // Event listener for loading character
             $('.character-name').click(function() {
@@ -194,6 +206,7 @@
     
         function closePopup() {
             $('#character-list-popup').remove();
+            $("#main-button-container").show(); // Show the main button container when the popup is closed
         }
     
         function populateStatsForm(characterData) {
@@ -238,6 +251,7 @@
                 }
             });
         }
+    
         function checkSignInStatus() {
             if (!localStorage.getItem("signedIn")) {
                 window.location.href = "../SignInSignUp/signin.html"; // Redirect to sign-in/sign-up page
