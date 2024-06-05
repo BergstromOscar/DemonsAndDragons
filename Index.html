@@ -41,11 +41,16 @@
     <script>
         $(document).ready(function() {
             // Define the checkSignInStatus function
-    function checkSignInStatus() {
-    if (!localStorage.getItem("signedIn") && window.location.pathname.includes("SignInSignUp/signin.html")) {
-        window.location.href = "signinsignup/signin.html"; // Redirect to sign-in/sign-up page
-    }
-}
+            function checkSignInStatus() {
+                if (!localStorage.getItem("signedIn") && window.location.pathname.includes("SignInSignUp/signin.html")) {
+                    window.location.href = "signinsignup/signin.html"; // Redirect to sign-in/sign-up page
+                }
+            }
+    
+            // Call the function after defining it
+            checkSignInStatus();
+    
+            // Other script code here
             $('#profile-icon').click(function() {
                 window.location.href = 'Profile/profile.html';
             });
@@ -56,9 +61,6 @@
                 window.location.href = 'LoadCharacter/load-character.html';
             });
         });
-    
-    // Call the function after defining it
-    checkSignInStatus();
     </script>
 </body>
 </html>
