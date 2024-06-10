@@ -69,14 +69,14 @@
         /* Popup Styling */
         .popup {
             background-color: rgba(47, 53, 47, 0.9); /* Adjusted background color */
-    padding: 20px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 9999;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Added box shadow */
-    clip-path: polygon(5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%, 0% 5%); /* Eight-sided shape */
+            padding: 20px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Added box shadow */
+            clip-path: polygon(5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%, 0% 5%); /* Eight-sided shape */
         }
         .close {
             color: #aaa;
@@ -160,8 +160,8 @@
         e.preventDefault();
         var username = $("#login-username").val();
         var password = $("#login-password").val();
-        var storedPassword = localStorage.getItem(username);
-        if (storedPassword === password) {
+        var profileData = JSON.parse(localStorage.getItem('profileData')) || {};
+        if (profileData.username === username && profileData.password === password) {
             localStorage.setItem("signedIn", "true");
             $("#login-message").text("Successfully signed in.");
             window.location.href = "../index.html";
@@ -175,10 +175,13 @@
         e.preventDefault();
         var username = $("#signup-username").val();
         var password = $("#signup-password").val();
-        if (localStorage.getItem(username)) {
+        var profileData = JSON.parse(localStorage.getItem('profileData')) || {};
+        if (profileData.username) {
             $("#signup-message").text("Username already exists. Please choose another one.");
         } else {
-            localStorage.setItem(username, password);
+            profileData.username = username;
+            profileData.password = password;
+            localStorage.setItem('profileData', JSON.stringify(profileData));
             localStorage.setItem("signedIn", "true");
             $("#signup-message").text("Successfully signed up. You can now sign in.");
             // Automatically sign in the user after sign up
@@ -213,4 +216,3 @@
 
 </body>
 </html>
-
