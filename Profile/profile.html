@@ -70,19 +70,6 @@
             margin-bottom: 10px;
         }
 
-        /* Add CSS for select and its options */
-        select {
-            font-family: 'Cinzel', sans-serif; /* Change font to Cinzel */
-            background-color: transparent; /* Make background transparent */
-            border: 1px solid #ccc; /* Add border for clarity */
-            padding: 8px; /* Add padding for better appearance */
-            border-radius: 5px; /* Add border radius for rounded corners */
-            color: white; /* Change text color to white */
-        }
-
-        select option {
-            background-color: rgba(0, 0, 0, 0.5); /* Make dropdown options transparent */
-        }
     </style>
 </head>
 <body>
@@ -142,13 +129,13 @@
                     <!-- Populate this dynamically from local storage -->
                 </select><br><br>
                 <label for="invite-email">Invite Player (Email):</label>
-<ul id="invite-email-list" style="list-style-type: none;">
-<li><input type="email" class="invite-email-input" name="invite-email"><button type="button" class="add-player-btn">Add Player</button></li>
-</ul><br>
-<button type="button" id="save-group-button">Save Group</button>
-<!-- Add cancel button -->
-<button type="button" id="cancel-group-button">Cancel</button>
-</form>
+                <ul id="invite-email-list" style="list-style-type: none;">
+                    <li><input type="email" class="invite-email-input" name="invite-email"><button type="button" class="add-player-btn">Add Player</button></li>
+                </ul><br>
+                <button type="button" id="save-group-button">Save Group</button>
+                <!-- Move cancel button here -->
+                <button type="button" id="cancel-group-button">Cancel</button>
+            </form>
 </div>
 </main>
 <div class="button-container">

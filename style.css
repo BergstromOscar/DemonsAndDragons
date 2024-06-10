@@ -83,6 +83,7 @@ button {
     display: inline-block;
     font-size: 18px; /* Slightly larger font size */
     margin: 10px 5px;
+    padding: 5px 50px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
     max-width: 400px;
@@ -239,12 +240,18 @@ input[type="number"] {
 select {
     font-family: 'Cinzel', sans-serif; /* Change font to Cinzel */
     background-color: transparent; /* Make background transparent */
-    border: 1px solid #ccc; /* Add border for clarity */
     padding: 8px; /* Add padding for better appearance */
     border-radius: 5px; /* Add border radius for rounded corners */
     color: white; /* Change text color to white */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    clip-path: polygon(5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%, 0% 5%);
 }
 
 select option {
     background-color: rgba(0, 0, 0, 0.5); /* Make dropdown options transparent */
+}
+select option:checked {
+    background-color: rgba(47, 53, 47);
 }
