@@ -24,7 +24,6 @@
         .column {
             width: 45%; /* Adjust as needed */
             background-color: rgba(47, 53, 47, 0.9);
-            background-color: rgba(47, 53, 47, 0.8); /* Transparent grey background */
             padding: 15px;
             margin-bottom: 20px;
             border-radius: 8px;
@@ -59,6 +58,8 @@
                 <p><strong>Surname:</strong> <span id="display-surname"></span></p>
                 <p><strong>Age:</strong> <span id="display-age"></span></p>
                 <p><strong>Email:</strong> <span id="display-email"></span></p>
+                <p><strong>Username:</strong> <span id="display-username"></span></p>
+                <p><strong>Password:</strong> <span id="display-password"></span></p>
                 <button id="edit-profile-button">Edit</button>
             </div>
             <form class="profile-display" id="profile-form" style="display:none;">
@@ -70,6 +71,10 @@
                 <input type="number" id="age" name="age"><br><br>
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email"><br><br>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username"><br><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password"><br><br>
                 <button type="button" id="save-profile-button">Save Profile</button>
             </form>
         </div>
@@ -96,7 +101,8 @@
             function loadProfileData() {
                 if (localStorage.getItem('profileData')) {
                     const profileData = JSON.parse(localStorage.getItem('profileData'));
-                    $('#display-name').text(profileData.name + ' ' + profileData.surname);
+                    $('#display-name').text(profileData.name);
+                    $('#display-surname').text(profileData.surname);
                     $('#display-age').text(profileData.age);
                     $('#display-email').text(profileData.email);
                     $('#display-username').text(profileData.username);
@@ -142,19 +148,7 @@
             // Check for player group and character names
             function loadGroupContainer() {
                 if (!localStorage.getItem('playerGroup')) {
-                    var characterOptions = [];
-            for (var i = 0; i < localStorage.length; i++) {
-                var key = localStorage.key(i);
-                if (key.startsWith('character-')) {
-                    var characterData = JSON.parse(localStorage.getItem(key));
-                    var character = {
-                        id: key.replace('character-', ''),
-                        name: characterData.Name
-                    };
-                    characterOptions.push(character);
-                }
-            }
-           
+                    const characters = JSON.parse(localStorage.getItem('characters')) || [];
                     let characterOptions = '';
                     characters.forEach(character => {
                         characterOptions += `<option value="${character.name}">${character.name}</option>`;
