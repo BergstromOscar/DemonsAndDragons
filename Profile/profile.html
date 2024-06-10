@@ -93,7 +93,7 @@
                 <p><strong>Name:</strong> <span id="display-name"></span></p>
                 <p><strong>Surname:</strong> <span id="display-surname"></span></p>
                 <p><strong>Age:</strong> <span id="display-age"></span></p>
-                <p><strong>Email:</strong> <span id="display-profile-email"></span></p>
+                <p><strong>Email:</strong> <span id="display-profileEmail"></span></p>
                 <p><strong>Username:</strong> <span id="display-username"></span></p>
                 <p><strong>Password:</strong> <span id="display-password"></span></p>
                 <button id="edit-profile-button" style="float: left;">Edit</button>
@@ -105,7 +105,7 @@
                 <input type="text" id="surname" name="surname"><br><br>
                 <label for="age">Age:</label>
                 <input type="number" id="age" name="age"><br><br>
-                <label for="profile-email">Email:</label>
+                <label for="profileEmail">Email:</label>
                 <input type="email" class="email-input" name="email">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username"><br><br>
@@ -166,7 +166,7 @@ if (Object.keys(profileData).length > 0) {
     $('#display-name').text(profileData.name || '');
     $('#display-surname').text(profileData.surname || '');
     $('#display-age').text(profileData.age || '');
-    $('#display-email').text(profileData.email || '');
+    $('#display-profileEmail').text(profileData.profileEmail || '');
     $('#display-username').text(profileData.username || '');
     $('#display-password').text('•'.repeat(profileData.password.length) || ''); // Display dots for password
     $('#profile-display').show();
@@ -184,7 +184,7 @@ const profileData = {
     name: $('#name').val(),
     surname: $('#surname').val(),
     age: $('#age').val(),
-    email: $('#email').val(),
+    profileEmail: $('#profileEmail').val(),
     username: $('#username').val(),
     password: $('#password').val()
 };
@@ -199,7 +199,7 @@ const profileData = JSON.parse(localStorage.getItem('profileData')) || {};
 $('#name').val(profileData.name || '');
 $('#surname').val(profileData.surname || '');
 $('#age').val(profileData.age || '');
-$('#email').val(profileData.email || '');
+$('#profileEmail').val(profileData.profileEmail || '');
 $('#username').val(profileData.username || '');
 $('#password').val(profileData.password || '');
 $('#profile-display').hide();
