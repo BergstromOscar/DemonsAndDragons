@@ -42,7 +42,6 @@
     </div>
     <footer>
         <p>&copy; 2024 Demons And Dragons</p>
-        <div class="last-saved" id="last-saved">Last saved: N/A</div>
     </footer>
     <div class="save-popup" id="save-popup">Data has been saved!</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -138,7 +137,6 @@
             localStorage.setItem('character-' + characterID, JSON.stringify(characterData));
 
             showSavePopup();
-            updateLastSaved();
         }
 
         function showSavePopup() {
@@ -147,13 +145,6 @@
             setTimeout(function() {
                 savePopup.fadeOut();
             }, 2000); // Show the popup for 2 seconds
-        }
-
-        function updateLastSaved() {
-            var now = new Date();
-            var formattedTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ', ' +
-                                (now.getMonth() + 1).toString().padStart(2, '0') + '/' + now.getDate().toString().padStart(2, '0') + '/' + now.getFullYear();
-            $("#last-saved").text("Last saved: " + formattedTime);
         }
 // Remove signedIn from localStorage when clicking the DADIcon.png
 $('#icon').click(function() {

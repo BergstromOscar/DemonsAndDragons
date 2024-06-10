@@ -155,7 +155,7 @@
                     }
                     input.val(characterData[$(this).prop("tagName")]);
 
-                    input.on('input', function() {
+                    input.on('blur', function() {
                         const oldName = characterData["Name"];
                         characterData[$(this).prop("tagName")] = $(this).val();
                         if ($(this).prop("tagName") === "Name") {
