@@ -27,7 +27,7 @@ body::before {
 }
 
 header, footer {
-    background-color: #333;
+    background-color:rgba(47, 53, 47, 0.9);
     color: white;
     text-align: center;
     padding: 0;
@@ -35,6 +35,11 @@ header, footer {
     font-family: 'Cinzel', serif; /* Apply the fantasy font */
     font-size: 1.5rem;
     letter-spacing: 2px;
+}
+footer {
+    font-size: 1rem;
+    letter-spacing: 1px;
+    margin-top: 0px;
 }
 
 header {
@@ -104,7 +109,7 @@ form {
 
 /* Popup styles */
 #character-list-popup {
-    background-color: rgba(47, 53, 47, 0.9); /* Adjusted background color */
+    background-color: rgba(47, 53, 47, 0.8); /* Adjusted background color */
     padding: 20px;
     position: fixed;
     top: 50%;
@@ -128,7 +133,7 @@ form {
 }
 
 #character-list-popup li:hover {
-    background-color: #3e3e3e;
+    background-color: rgba(47, 53, 47, 0.8);
 }
 
 .delete-character-button {
@@ -219,7 +224,7 @@ input[type="number"] {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(47, 53, 47, 0.9);
+    background-color: rgba(47, 53, 47, 0.8);
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
