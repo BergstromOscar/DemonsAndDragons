@@ -117,7 +117,7 @@
             <div class="group-container" id="group-container">
                 
             </div>
-            <button id="new-group-button" style="display: block;">New Group</button>
+            <button id="new-group-button">New Group</button>
             <form id="new-group-form" style="display: none;">
                 <label for="group-name">Group Name:</label>
                 <input type="text" id="group-name" name="group-name"><br><br>
@@ -263,7 +263,7 @@
                 $('#new-group-button').click(function() {
         $('#group-container').toggle();
         $('#new-group-form').toggle();
-        $('#new-group-button').display ="none";
+        $('#new-group-button').toggle();
     });
 
                 // Save new group data to local storage
@@ -271,7 +271,7 @@
                     const groupName = $('#group-name').val();
                     const characterName = $('#character-name').val();
                     const inviteEmails = [];
-                    $('#new-group-button').display ="block";
+                   
                     $('.invite-email-input').each(function() {
                         inviteEmails.push($(this).val());
                     });
