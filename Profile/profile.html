@@ -35,7 +35,7 @@
             margin-top: 20px;
         }
 
-        .plus-button, .minus-button {
+        .plus-button, .delete-button {
             cursor: pointer;
             font-size: 20px;
             color: green;
@@ -43,7 +43,7 @@
             margin-top: 20px;
         }
 
-        .minus-button {
+        .delete-button {
             color: red;
             margin-left: 10px;
         }
@@ -53,6 +53,11 @@
             align-items: center;
             justify-content: space-between;
             padding: 5px 0;
+        }
+
+        .add-player-btn {
+            font-size: 12px;
+            margin-left: 5px;
         }
     </style>
 </head>
@@ -89,7 +94,9 @@
                 <label for="age">Age:</label>
                 <input type="number" id="age" name="age"><br><br>
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email"><br><br>
+                <ul id="email-list">
+                    <li><input type="email" class="email-input" name="email"><button type="button" class="add-player-btn">Add Player</button></li>
+                </ul><br>
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username"><br><br>
                 <label for="password">Password:</label>
@@ -101,7 +108,7 @@
             <div class="group-container" id="group-container">
             
             </div>
-            <div class="plus-button" id="toggle-group-form">+</div>
+            <button class="plus-button" id="toggle-group-form">Create New Group</button>
         </div>
     </main>
     <div class="button-container">
@@ -129,157 +136,169 @@
                     $('#display-username').text(profileData.username || '');
                     $('#display-password').text('•'.repeat(profileData.password.length) || ''); // Display dots for password
                     $('#profile-display').show();
-                    $('#profile-form').hide();
-                } else {
-                    $('#profile-display').hide();
-                    $('#profile-form').show();
-                }
-            }
-    
-            loadProfileData();
-    
-            // Save profile data to local storage
-            $('#save-profile-button').click(function() {
-                const profileData = {
-                    name: $('#name').val(),
-                    surname: $('#surname').val(),
-                    age: $('#age').val(),
-                    email: $('#email').val(),
-                    username: $('#username').val(),
-                    password: $('#password').val()
-                };
-                localStorage.setItem('profileData', JSON.stringify(profileData));
-                alert('Profile saved successfully!');
-                loadProfileData();
-            });
-    
-            // Show the form to edit profile data
-            $('#edit-profile-button').click(function() {
-                const profileData = JSON.parse(localStorage.getItem('profileData')) || {};
-                $('#name').val(profileData.name || '');
-                $('#surname').val(profileData.surname || '');
-$('#age').val(profileData.age || '');
-$('#email').val(profileData.email || '');
-$('#username').val(profileData.username || '');
-$('#password').val(profileData.password || '');
+$('#profile-form').hide();
+} else {
 $('#profile-display').hide();
 $('#profile-form').show();
+}
+}        loadProfileData();
+
+// Save profile data to local storage
+$('#save-profile-button').click(function() {
+    const profileData = {
+        name: $('#name').val(),
+        surname: $('#surname').val(),
+        age: $('#age').val(),
+        email: [],
+        username: $('#username').val(),
+        password: $('#password').val()
+    };
+    $('.email-input').each(function() {
+        profileData.email.push($(this).val());
+    });
+    localStorage.setItem('profileData', JSON.stringify(profileData));
+    alert('Profile saved successfully!');
+    loadProfileData();
 });
-        // Toggle between group form and group list
-        $('#toggle-group-form').click(function() {
-            if ($('#group-container').children().length === 0) {
-                showGroupForm();
-            } else {
-                loadGroupContainer();
-            }
-        });
 
-        // Check for player group and character names
-        function loadGroupContainer() {
-            const groups = getPlayerGroups();
-            if (groups.length === 0) {
-                showGroupForm();
-            } else {
-                showGroupList(groups);
-            }
-        }
+// Show the form to edit profile data
+$('#edit-profile-button').click(function() {
+    const profileData = JSON.parse(localStorage.getItem('profileData')) || {};
+    $('#name').val(profileData.name || '');
+    $('#surname').val(profileData.surname || '');
+    $('#age').val(profileData.age || '');
+    $('#email-list').empty();
+    profileData.email.forEach(function(email) {
+        $('#email-list').append(`<li><input type="email" class="email-input" name="email" value="${email}"><button type="button" class="add-player-btn">Add Player</button></li>`);
+    });
+    $('#username').val(profileData.username || '');
+    $('#password').val(profileData.password || '');
+    $('#profile-display').hide();
+    $('#profile-form').show();
+});
 
-        // Show the group form to create a new group
-        function showGroupForm() {
-            const characters = getCharacterList();
-            let characterOptions = '';
-            characters.forEach(character => {
-                characterOptions += `<option value="${character.name}">${character.name}</option>`;
-            });
+// Toggle between group form and group list
+$('#toggle-group-form').click(function() {
+    loadGroupContainer();
+});
 
-            const groupContainerHtml = `
-                <label for="group-name">Group Name:</label>
-                <input type="text" id="group-name" name="group-name"><br><br>
-                <label for="character-name">Player Character Name:</label>
-                <select id="character-name" name="character-name">
-                    ${characterOptions}
-                </select><br><br>
-                <label for="invite-email">Invite Player (Email):</label>
-                <input type="email" id="invite-email" name="invite-email"><br><br>
-                <button type="button" id="save-group-button">Save Group</button>
-            `;
-            $('#group-container').html(groupContainerHtml);
+// Check for player group and character names
+function loadGroupContainer() {
+    const groups = getPlayerGroups();
+    if (groups.length === 0) {
+        showGroupForm();
+    } else {
+        showGroupList(groups);
+    }
+}
 
-            $('#save-group-button').click(function() {
-                const groupName = $('#group-name').val();
-                const playerGroup = {
-                    groupName: groupName,
-                    characterName: $('#character-name').val(),
-                    inviteEmail: $('#invite-email').val()
-                };
-                localStorage.setItem(`playerGroup-${groupName}`, JSON.stringify(playerGroup));
-                alert('Group saved successfully!');
-                loadGroupContainer();
-            });
-        }
-
-        // Show the list of existing groups
-        function showGroupList(groups) {
-            let groupListHtml = '<h2>Existing Groups</h2><ul>';
-            groups.forEach(group => {
-                groupListHtml += `
-                    <li class="group-list-item">
-                        ${group.groupName}
-                        <button class="minus-button" data-group="${group.groupName}">-</button>
-                    </li>`;
-            });
-            groupListHtml += '</ul>';
-            $('#group-container').html(groupListHtml);
-
-            $('.minus-button').click(function() {
-                const groupName = $(this).data('group');
-                localStorage.removeItem(`playerGroup-${groupName}`);
-                loadGroupContainer();
-            });
-        }
-
-        // Function to get character list
-        function getCharacterList() {
-            var characterList = [];
-            for (var i = 0; i < localStorage.length; i++) {
-                var key = localStorage.key(i);
-                if (key.startsWith('character-')) {
-                    var characterData = JSON.parse(localStorage.getItem(key));
-                    var character = {
-                        id: key.replace('character-', ''),
-                        name: characterData.Name
-                    };
-                    characterList.push(character);
-                }
-            }
-            return characterList;
-        }
-
-        // Function to get player groups
-        function getPlayerGroups() {
-            var groups = [];
-            for (var i = 0; i < localStorage.length; i++) {
-                var key = localStorage.key(i);
-                if (key.startsWith('playerGroup-')) {
-                    var groupData = JSON.parse(localStorage.getItem(key));
-                    groups.push(groupData);
-                }
-            }
-            return groups;
-        }
+// Show the group form to create a new group
+function showGroupForm() {
+    const characters = getCharacterList();
+    let characterOptions = '';
+    characters.forEach(character => {
+        characterOptions += `<option value="${character.name}">${character.name}</option>`;
     });
 
-    // Define the checkSignInStatus function
-    function checkSignInStatus() {
-        if (!localStorage.getItem("signedIn")) {
-            window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
+    const groupContainerHtml = `
+        <label for="group-name">Group Name:</label>
+        <input type="text" id="group-name" name="group-name"><br><br>
+        <label for="character-name">Player Character Name:</label>
+        <select id="character-name" name="character-name">
+            ${characterOptions}
+        </select><br><br>
+        <label for="invite-email">Invite Player (Email):</label>
+        <ul id="invite-email-list">
+            <li><input type="email" class="invite-email-input" name="invite-email"><button type="button" class="add-player-btn">Add Player</button></li>
+        </ul><br>
+        <button type="button" id="save-group-button">Save Group</button>
+    `;
+    $('#group-container').html(groupContainerHtml);
+
+    $('#save-group-button').click(function() {
+        const groupName = $('#group-name').val();
+        const playerGroup = {
+            groupName: groupName,
+            characterName: $('#character-name').val(),
+            inviteEmail: []
+        };
+        $('.invite-email-input').each(function() {
+            playerGroup.inviteEmail.push($(this).val());
+        });
+        localStorage.setItem(`playerGroup-${groupName}`, JSON.stringify(playerGroup));
+        alert('Group saved successfully!');
+        loadGroupContainer();
+    });
+}
+
+// Show the list of existing groups
+function showGroupList(groups) {
+    let groupListHtml = '<h2>Existing Groups</h2><ul>';
+    groups.forEach(group => {
+        groupListHtml += `
+            <li class="group-list-item">
+                ${group.groupName}
+                <button class="delete-button" data-group="${group.groupName}">X</button>
+            </li>`;
+    });
+    groupListHtml += '</ul>';
+    $('#group-container').html(groupListHtml);
+
+    $('.delete-button').click(function() {
+        const groupName = $(this).data('group');
+        localStorage.removeItem(`playerGroup-${groupName}`);
+        loadGroupContainer();
+    });
+}
+
+// Function to get character list
+function getCharacterList() {
+    var characterList = [];
+    for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        if (key.startsWith('character-')) {
+            var characterData = JSON.parse(localStorage.getItem(key));
+            var character = {
+                id: key.replace('character-', ''),
+                name: characterData.Name
+            };
+            characterList.push(character);
         }
     }
+    return characterList;
+}
 
-    // Remove signedIn from localStorage when clicking the DADIcon.png
-    $('#icon').click(function() {
-        localStorage.removeItem("signedIn");
-    });
+// Function to get player groups
+function getPlayerGroups() {
+    var groups = [];
+    for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        if (key.startsWith('playerGroup-')) {
+            var groupData = JSON.parse(localStorage.getItem(key));
+            groups.push(groupData);
+        }
+    }
+    return groups;
+}
+
+// Define the checkSignInStatus function
+function checkSignInStatus() {
+    if (!localStorage.getItem("signedIn")) {
+        window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
+    }
+}
+
+// Remove signedIn from localStorage when clicking the DADIcon.png
+$('#icon').click(function() {
+    localStorage.removeItem("signedIn");
+});
+
+// Add functionality to dynamically add email inputs
+$('body').on('click', '.add-player-btn', function() {
+    const emailInput = `<li><input type="email" class="invite-email-input" name="invite-email"><button type="button" class="add-player-btn">Add Player</button></li>`;
+    $(this).closest('ul').append(emailInput);
+});
+});
 </script>
 </body>
 </html>
