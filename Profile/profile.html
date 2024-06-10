@@ -125,7 +125,7 @@
                     <!-- Populate this dynamically from local storage -->
                 </select><br><br>
                 <label for="invite-email">Invite Player (Email):</label>
-                <ul id="invite-email-list">
+                <ul id="invite-email-list" style="list-style-type: none;">
                     <li><input type="email" class="invite-email-input" name="invite-email"><button type="button" class="add-player-btn">Add Player</button></li>
                 </ul><br>
                 <button type="button" id="save-group-button">Save Group</button>
@@ -259,12 +259,10 @@
                     $(this).closest('ul').append(emailInput);
                 });
 
-                // Show or hide the new group form based on button click
                 $('#new-group-button').click(function() {
-                    $('#group-container').hidden();
-                    $('#new-group-button').toggle();
-                    $('#new-group-form').toggle();
-                });
+        $('#group-container').toggle();
+        $('#new-group-form').toggle();
+    });
 
                 // Save new group data to local storage
                 $('#save-group-button').click(function() {
@@ -281,7 +279,8 @@
                     };
                     localStorage.setItem(`playerGroup-${groupName}`, JSON.stringify(groupData));
                     alert('Group saved successfully!');
-                    $('#new-group-form').hide();
+                    $('#group-container').toggle();
+        $('#new-group-button').toggle();
                     loadGroupContainer();
                 });
 
