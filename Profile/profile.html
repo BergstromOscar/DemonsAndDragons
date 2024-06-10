@@ -98,14 +98,15 @@
             
             // Load profile data from local storage if it exists
             function loadProfileData() {
-                if (localStorage.getItem('profileData')) {
-                    const profileData = JSON.parse(localStorage.getItem('profileData'));
-                    const username = localStorage.getItem('username');
-                    const password = localStorage.getItem('password');
-                    $('#display-name').text(profileData.name);
-                    $('#display-surname').text(profileData.surname);
-                    $('#display-age').text(profileData.age);
-                    $('#display-email').text(profileData.email);
+                const profileData = JSON.parse(localStorage.getItem('profileData')) || {};
+                const username = localStorage.getItem('username') || '';
+                const password = localStorage.getItem('password') || '';
+                
+                if (Object.keys(profileData).length > 0) {
+                    $('#display-name').text(profileData.name || '');
+                    $('#display-surname').text(profileData.surname || '');
+                    $('#display-age').text(profileData.age || '');
+                    $('#display-email').text(profileData.email || '');
                     $('#display-username').text(username);
                     $('#display-password').text('•'.repeat(password.length)); // Display dots for password
                     $('#profile-display').show();
@@ -115,9 +116,9 @@
                     $('#profile-form').show();
                 }
             }
-
+    
             loadProfileData();
-
+    
             // Save profile data to local storage
             $('#save-profile-button').click(function() {
                 const profileData = {
@@ -134,22 +135,22 @@
                 alert('Profile saved successfully!');
                 loadProfileData();
             });
-
+    
             // Show the form to edit profile data
             $('#edit-profile-button').click(function() {
-                const profileData = JSON.parse(localStorage.getItem('profileData'));
-                const username = localStorage.getItem('username');
-                const password = localStorage.getItem('password');
-                $('#name').val(profileData.name);
-                $('#surname').val(profileData.surname);
-                $('#age').val(profileData.age);
-                $('#email').val(profileData.email);
+                const profileData = JSON.parse(localStorage.getItem('profileData')) || {};
+                const username = localStorage.getItem('username') || '';
+                const password = localStorage.getItem('password') || '';
+                $('#name').val(profileData.name || '');
+                $('#surname').val(profileData.surname || '');
+                $('#age').val(profileData.age || '');
+                $('#email').val(profileData.email || '');
                 $('#username').val(username); // Populate username field
                 $('#password').val(password); // Populate password field
                 $('#profile-display').hide();
                 $('#profile-form').show();
             });
-
+    
             // Check for player group and character names
             function loadGroupContainer() {
                 if (!localStorage.getItem('playerGroup')) {
@@ -158,7 +159,7 @@
                     characters.forEach(character => {
                         characterOptions += `<option value="${character.name}">${character.name}</option>`;
                     });
-
+    
                     const groupContainerHtml = `
                         <label for="group-name">Group Name:</label>
                         <input type="text" id="group-name" name="group-name"><br><br>
@@ -169,7 +170,7 @@
                         <button type="button" id="save-group-button">Save Group</button>
                     `;
                     $('#group-container').html(groupContainerHtml);
-
+    
                     $('#save-group-button').click(function() {
                         const playerGroup = {
                             groupName: $('#group-name').val(),
@@ -182,17 +183,17 @@
                     $('#group-container').html('<p>Group already exists.</p>');
                 }
             }
-
+    
             loadGroupContainer();
         });
-
+    
         // Define the checkSignInStatus function
         function checkSignInStatus() {
             if (!localStorage.getItem("signedIn")) {
                 window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
             }
         }
-
+    
         // Remove signedIn from localStorage when clicking the DADIcon.png
         $('#icon').click(function() {
             localStorage.removeItem("signedIn");
