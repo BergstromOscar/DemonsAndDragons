@@ -105,9 +105,7 @@
                 <label for="age">Age:</label>
                 <input type="number" id="age" name="age"><br><br>
                 <label for="email">Email:</label>
-                <ul id="email-list" style="padding: 0px;">
-                    <li><input type="email" class="email-input" name="email"><button type="button" class="add-player-btn">Add Player</button></li>
-                </ul><br>
+                <input type="email" class="email-input" name="email">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username"><br><br>
                 <label for="password">Password:</label>
@@ -136,6 +134,14 @@
                 <!-- Move cancel button here -->
                 <button type="button" id="cancel-group-button">Cancel</button>
             </form>
+            <!-- Add this div to display group information -->
+<div id="group-info" style="display: none;">
+    <h2>Group Information</h2>
+    <p><strong>Group Name:</strong> <span id="group-info-name"></span></p>
+    <p><strong>Character:</strong> <span id="group-info-character"></span></p>
+    <p><strong>Invited Players:</strong></p>
+    <ul id="group-info-invited-players"></ul>
+</div>
 </div>
 </main>
 <div class="button-container">
@@ -316,6 +322,32 @@ characterNames.forEach(characterName => {
 });
 }
 populateCharacterNamesDropdown();
+});
+
+
+// Add an event listener to group names to display group information
+$('body').on('click', '.group-list-item', function() {
+    const groupName = $(this).text().trim(); // Get the group name
+    const groupData = JSON.parse(localStorage.getItem(`playerGroup-${groupName}`)); // Retrieve group data from local storage
+    if (groupData) {
+        // Populate the group information
+        $('#group-info-name').text(groupData.groupName);
+        $('#group-info-character').text(groupData.characterName);
+        $('#group-info-invited-players').empty();
+        groupData.inviteEmails.forEach(email => {
+            $('#group-info-invited-players').append(`<li>${email}</li>`);
+        });
+        // Show the group information
+        $('#group-info').show();
+    }
+});
+
+// Hide the group information when clicking outside the modal or on close button
+$(document).mouseup(function(e) {
+    const container = $('#group-info');
+    if (!container.is(e.target) && container.has(e.target).length === 0) {
+        container.hide();
+    }
 });
 </script>
 </body>
