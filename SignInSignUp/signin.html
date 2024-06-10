@@ -160,7 +160,7 @@
         e.preventDefault();
         var username = $("#login-username").val();
         var password = $("#login-password").val();
-        var storedPassword = localStorage.getItem(username);
+        var storedPassword = localStorage.getItem(profileData["password"]);
         if (storedPassword === password) {
             localStorage.setItem("signedIn", "true");
             $("#login-message").text("Successfully signed in.");
@@ -175,10 +175,10 @@
         e.preventDefault();
         var username = $("#signup-username").val();
         var password = $("#signup-password").val();
-        if (localStorage.getItem(username)) {
+        if (localStorage.getItem(profileData["username"])) {
             $("#signup-message").text("Username already exists. Please choose another one.");
         } else {
-            localStorage.setItem(username, password);
+            localStorage.setItem(profileData["username"], profileData["password"]);
             localStorage.setItem("signedIn", "true");
             $("#signup-message").text("Successfully signed up. You can now sign in.");
         }
