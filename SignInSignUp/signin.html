@@ -129,7 +129,7 @@
 </div>
 
     <script>
-       $(document).ready(function() {
+     $(document).ready(function() {
     // Define the checkSignInStatus function
     function checkSignInStatus() {
         if (!localStorage.getItem("signedIn") && window.location.pathname.includes("SignInSignUp/signin.html")) {
@@ -160,7 +160,7 @@
         e.preventDefault();
         var username = $("#login-username").val();
         var password = $("#login-password").val();
-        var storedPassword = localStorage.getItem(profileData["password"]);
+        var storedPassword = localStorage.getItem(username);
         if (storedPassword === password) {
             localStorage.setItem("signedIn", "true");
             $("#login-message").text("Successfully signed in.");
@@ -175,12 +175,14 @@
         e.preventDefault();
         var username = $("#signup-username").val();
         var password = $("#signup-password").val();
-        if (localStorage.getItem(profileData["username"])) {
+        if (localStorage.getItem(username)) {
             $("#signup-message").text("Username already exists. Please choose another one.");
         } else {
-            localStorage.setItem(profileData["username"], profileData["password"]);
+            localStorage.setItem(username, password);
             localStorage.setItem("signedIn", "true");
             $("#signup-message").text("Successfully signed up. You can now sign in.");
+            // Automatically sign in the user after sign up
+            window.location.href = "../index.html";
         }
     });
 
