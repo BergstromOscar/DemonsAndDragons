@@ -255,3 +255,9 @@ select option {
 select option:checked {
     background-color: rgba(47, 53, 47);
 }
+h2{
+    color: white;
+}
+span{
+    color:white;
+}

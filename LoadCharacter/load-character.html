@@ -76,7 +76,7 @@
                 <h2>Select a Character to Load or Delete</h2>
                 <ul id="character-list">
                     ${characterList.map(character => `
-                        <li>
+                        <li style="display: inline-block;">
                             <span class="character-name" data-character-id="${character.id}">${character.name}</span>
                             <button class="delete-character-button" data-character-id="${character.id}">X</button>
                         </li>`).join('')}
