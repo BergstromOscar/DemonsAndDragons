@@ -108,7 +108,7 @@
                         input.val($(this).text());
                     }
 
-                    input.on('input', function() {
+                    blur.on('input', function() {
                         saveStats();
                     });
 
@@ -127,7 +127,7 @@
 
         function saveStats() {
             var characterData = {};
-            $("#stats-form blur, #stats-form select").each(function() {
+            $("#stats-form input, #stats-form select").each(function() {
                 var attributeName = $(this).attr("id");
                 var attributeValue = $(this).val();
                 characterData[attributeName] = attributeValue;
