@@ -196,6 +196,8 @@ label {
 
 input[type="text"],
 input[type="number"],
+input[type="password"],
+input[type="email"],
 select {
     width: 55%; /* Adjusted width for better spacing */
     padding: 5px;
