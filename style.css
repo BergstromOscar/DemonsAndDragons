@@ -264,3 +264,6 @@ span{
 ul{
     padding: 0px;
 }
+label{
+    float: left;
+}
