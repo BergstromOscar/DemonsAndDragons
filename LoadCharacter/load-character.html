@@ -157,7 +157,7 @@
 
                     input.on('blur', function() {
                         const oldName = characterData["Name"];
-                        characterData[$(this).prop("tagName")] = $(this).val();
+                        characterData[$(this).prop("Name")] = $(this).val();
                         if ($(this).prop("tagName") === "Name") {
                             const newName = $(this).val();
                             localStorage.removeItem('character-' + oldName);
