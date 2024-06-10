@@ -142,7 +142,19 @@
             // Check for player group and character names
             function loadGroupContainer() {
                 if (!localStorage.getItem('playerGroup')) {
-                    const characters = JSON.parse(localStorage.getItem('characters')) || [];
+                    var characterOptions = [];
+            for (var i = 0; i < localStorage.length; i++) {
+                var key = localStorage.key(i);
+                if (key.startsWith('character-')) {
+                    var characterData = JSON.parse(localStorage.getItem(key));
+                    var character = {
+                        id: key.replace('character-', ''),
+                        name: characterData.Name
+                    };
+                    characterOptions.push(character);
+                }
+            }
+           
                     let characterOptions = '';
                     characters.forEach(character => {
                         characterOptions += `<option value="${character.name}">${character.name}</option>`;
