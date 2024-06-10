@@ -283,9 +283,21 @@
                     loadGroupContainer();
                 });
 
+
                 // Populate character names dropdown from local storage
                 function populateCharacterNamesDropdown() {
-                    const characterNames = []; // Assume character names are stored in local storage
+                    var characterNames = [];
+            for (var i = 0; i < localStorage.length; i++) {
+                var key = localStorage.key(i);
+                if (key.startsWith('character-')) {
+                    var characterData = JSON.parse(localStorage.getItem(key));
+                    var character = {
+                        id: key.replace('character-', ''),
+                        name: characterData.Name
+                    };
+                    characterNames.push(character);
+                }
+            }
                     characterNames.forEach(name => {
                         $('#character-name').append(`<option value="${name}">${name}</option>`);
                     });
