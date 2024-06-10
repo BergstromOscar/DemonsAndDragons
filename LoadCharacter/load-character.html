@@ -49,18 +49,20 @@
     <script>
         $(document).ready(function() {
             // Define the checkSignInStatus function
-    function checkSignInStatus() {
-    if (!localStorage.getItem("signedIn")) {
-        window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
-    }
-}
-       
+            function checkSignInStatus() {
+                if (!localStorage.getItem("signedIn")) {
+                    window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
+                }
+            }
+
+            checkSignInStatus();
             displayCharacterList();
+
             $('#profile-icon').click(function() {
                 window.location.href = '../Profile/profile.html';
             });
         });
-        checkSignInStatus();
+
         function loadXMLDoc(filename) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", filename, false);
@@ -154,8 +156,15 @@
                     input.val(characterData[$(this).prop("tagName")]);
 
                     input.on('input', function() {
+                        const oldName = characterData["Name"];
                         characterData[$(this).prop("tagName")] = $(this).val();
-                        localStorage.setItem('character-' + characterData["Name"], JSON.stringify(characterData));
+                        if ($(this).prop("tagName") === "Name") {
+                            const newName = $(this).val();
+                            localStorage.removeItem('character-' + oldName);
+                            localStorage.setItem('character-' + newName, JSON.stringify(characterData));
+                        } else {
+                            localStorage.setItem('character-' + characterData["Name"], JSON.stringify(characterData));
+                        }
                         showSavePopup();
                         updateLastSaved();
                     });
@@ -178,7 +187,7 @@
             savePopup.fadeIn();
             setTimeout(function() {
                 savePopup.fadeOut();
-            }, 2000); // Show the popup for 3 seconds
+            }, 2000); // Show the popup for 2 seconds
         }
 
         function updateLastSaved() {
@@ -187,12 +196,11 @@
                                 (now.getMonth() + 1).toString().padStart(2, '0') + '/' + now.getDate().toString().padStart(2, '0');
             $("#last-saved").text("Last saved: " + formattedTime);
         }
-// Remove signedIn from localStorage when clicking the DADIcon.png
-$('#icon').click(function() {
-                localStorage.removeItem("signedIn");
-            });
-    
 
+        // Remove signedIn from localStorage when clicking the DADIcon.png
+        $('#icon').click(function() {
+            localStorage.removeItem("signedIn");
+        });
     </script>
 </body>
 </html>
