@@ -95,7 +95,7 @@
                 <p><strong>Email:</strong> <span id="display-email"></span></p>
                 <p><strong>Username:</strong> <span id="display-username"></span></p>
                 <p><strong>Password:</strong> <span id="display-password"></span></p>
-                <button id="edit-profile-button">Edit</button>
+                <button id="edit-profile-button" style="float: left;">Edit</button>
             </div>
             <form class="profile-display" id="profile-form" style="display:none;">
                 <label for="name">Name:</label>
@@ -195,10 +195,7 @@ const profileData = JSON.parse(localStorage.getItem('profileData')) || {};
 $('#name').val(profileData.name || '');
 $('#surname').val(profileData.surname || '');
 $('#age').val(profileData.age || '');
-$('#email-list').empty();
-profileData.email.forEach(function(email) {
-    $('#email-list').append(`<li><input type="email" class="email-input" name="email" value="${email}"><button type="button" class="add-player-btn">Add Player</button></li>`);
-});
+$('#email').val(profileData.email || '');
 $('#username').val(profileData.username || '');
 $('#password').val(profileData.password || '');
 $('#profile-display').hide();
