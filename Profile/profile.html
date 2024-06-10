@@ -261,7 +261,7 @@
 
                 // Show or hide the new group form based on button click
                 $('#new-group-button').click(function() {
-                    $('#group-container').hide();
+                    $('#group-container').toggle();
                     $('#new-group-form').toggle();
                 });
 
@@ -299,8 +299,8 @@
                     characterNames.push(character);
                 }
             }
-                    characterNames.forEach(name => {
-                        $('#character-name').append(`<option value="${characterNames.name}">${characterNames.name}</option>`);
+                    characterNames.forEach(characterName => {
+                        $('#character-name').append(`<option value="${characterName.name}">${characterName.name}</option>`);
                     });
                 }
                 populateCharacterNamesDropdown();
