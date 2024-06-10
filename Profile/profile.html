@@ -147,7 +147,8 @@
     
             // Check for player group and character names
             function loadGroupContainer() {
-                if (!localStorage.getItem('playerGroup')) {
+                const groups = getPlayerGroups();
+                if (groups.length === 0) {
                     const characters = getCharacterList();
                     let characterOptions = '';
                     characters.forEach(character => {
@@ -161,20 +162,29 @@
                         <select id="character-name" name="character-name">
                             ${characterOptions}
                         </select><br><br>
+                        <label for="invite-email">Invite Player (Email):</label>
+                        <input type="email" id="invite-email" name="invite-email"><br><br>
                         <button type="button" id="save-group-button">Save Group</button>
                     `;
                     $('#group-container').html(groupContainerHtml);
     
                     $('#save-group-button').click(function() {
+                        const groupName = $('#group-name').val();
                         const playerGroup = {
-                            groupName: $('#group-name').val(),
-                            characterName: $('#character-name').val()
+                            groupName: groupName,
+                            characterName: $('#character-name').val(),
+                            inviteEmail: $('#invite-email').val()
                         };
-                        localStorage.setItem('playerGroup', JSON.stringify(playerGroup));
+                        localStorage.setItem(`playerGroup-${groupName}`, JSON.stringify(playerGroup));
                         alert('Group saved successfully!');
                     });
                 } else {
-                    $('#group-container').html('<p>Group already exists.</p>');
+                    let groupListHtml = '<h2>Existing Groups</h2><ul>';
+                    groups.forEach(group => {
+                        groupListHtml += `<li>${group.groupName}</li>`;
+                    });
+                    groupListHtml += '</ul>';
+                    $('#group-container').html(groupListHtml);
                 }
             }
     
@@ -195,6 +205,19 @@
                     }
                 }
                 return characterList;
+            }
+
+            // Function to get player groups
+            function getPlayerGroups() {
+                var groups = [];
+                for (var i = 0; i < localStorage.length; i++) {
+                    var key = localStorage.key(i);
+                    if (key.startsWith('playerGroup-')) {
+                        var groupData = JSON.parse(localStorage.getItem(key));
+                        groups.push(groupData);
+                    }
+                }
+                return groups;
             }
         });
     
