@@ -76,10 +76,10 @@
                 <h2>Select a Character to Load or Delete</h2>
                 <ul id="character-list">
                     ${characterList.map(character => `
-                        <li style="display: inline-block;">
-                            <span class="character-name" data-character-id="${character.id}">${character.name}</span>
-                            <button class="delete-character-button" data-character-id="${character.id}">X</button>
-                        </li>`).join('')}
+                        <li>
+    <span class="character-name" data-character-id="${character.id}" style="display: inline-block; margin-right: 10px;">${character.name}</span>
+    <button class="delete-character-button" data-character-id="${character.id}" style="display: inline-block;">X</button>
+</li>`).join('')}
                 </ul>
                 <div class="button-container">
                     <button onclick="window.location.href='../index.html'">Back to Home</button>
