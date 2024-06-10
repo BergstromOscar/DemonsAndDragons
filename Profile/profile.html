@@ -71,7 +71,7 @@
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email"><br><br>
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" readonly><br><br>
+                <input type="text" id="username" name="username"><br><br>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password"><br><br>
                 <button type="button" id="save-profile-button">Save Profile</button>
@@ -99,8 +99,6 @@
             // Load profile data from local storage if it exists
             function loadProfileData() {
                 const profileData = JSON.parse(localStorage.getItem('profileData')) || {};
-                const username = localStorage.getItem('username') || '';
-                const password = localStorage.getItem('password') || '';
                 
                 if (Object.keys(profileData).length > 0) {
                     $('#display-name').text(profileData.name || '');
@@ -137,14 +135,12 @@
             // Show the form to edit profile data
             $('#edit-profile-button').click(function() {
                 const profileData = JSON.parse(localStorage.getItem('profileData')) || {};
-                const username = localStorage.getItem('username') || '';
-                const password = localStorage.getItem('password') || '';
                 $('#name').val(profileData.name || '');
                 $('#surname').val(profileData.surname || '');
                 $('#age').val(profileData.age || '');
                 $('#email').val(profileData.email || '');
-                $('#username').val(username); // Populate username field
-                $('#password').val(password); // Populate password field
+                $('#username').val(profileData.username || '');
+                $('#password').val(profileData.password || ''); 
                 $('#profile-display').hide();
                 $('#profile-form').show();
             });
@@ -152,7 +148,7 @@
             // Check for player group and character names
             function loadGroupContainer() {
                 if (!localStorage.getItem('playerGroup')) {
-                    const characters = JSON.parse(localStorage.getItem('characters')) || [];
+                    const characters = getCharacterList();
                     let characterOptions = '';
                     characters.forEach(character => {
                         characterOptions += `<option value="${character.name}">${character.name}</option>`;
@@ -183,6 +179,23 @@
             }
     
             loadGroupContainer();
+
+            // Function to get character list
+            function getCharacterList() {
+                var characterList = [];
+                for (var i = 0; i < localStorage.length; i++) {
+                    var key = localStorage.key(i);
+                    if (key.startsWith('character-')) {
+                        var characterData = JSON.parse(localStorage.getItem(key));
+                        var character = {
+                            id: key.replace('character-', ''),
+                            name: characterData.Name
+                        };
+                        characterList.push(character);
+                    }
+                }
+                return characterList;
+            }
         });
     
         // Define the checkSignInStatus function
