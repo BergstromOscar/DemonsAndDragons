@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -72,7 +71,7 @@
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email"><br><br>
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username"><br><br>
+                <input type="text" id="username" name="username" readonly><br><br>
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password"><br><br>
                 <button type="button" id="save-profile-button">Save Profile</button>
@@ -101,12 +100,14 @@
             function loadProfileData() {
                 if (localStorage.getItem('profileData')) {
                     const profileData = JSON.parse(localStorage.getItem('profileData'));
+                    const username = localStorage.getItem('username');
+                    const password = localStorage.getItem('password');
                     $('#display-name').text(profileData.name);
                     $('#display-surname').text(profileData.surname);
                     $('#display-age').text(profileData.age);
                     $('#display-email').text(profileData.email);
-                    $('#display-username').text(profileData.username);
-                    $('#display-password').text('•'.repeat(profileData.password.length)); // Display dots for password
+                    $('#display-username').text(username);
+                    $('#display-password').text('•'.repeat(password.length)); // Display dots for password
                     $('#profile-display').show();
                     $('#profile-form').hide();
                 } else {
@@ -123,11 +124,13 @@
                     name: $('#name').val(),
                     surname: $('#surname').val(),
                     age: $('#age').val(),
-                    email: $('#email').val(),
-                    username: $('#username').val(), // Include username
-                    password: $('#password').val()  // Include password
+                    email: $('#email').val()
                 };
+                const username = $('#username').val();
+                const password = $('#password').val();
                 localStorage.setItem('profileData', JSON.stringify(profileData));
+                localStorage.setItem('username', username);
+                localStorage.setItem('password', password);
                 alert('Profile saved successfully!');
                 loadProfileData();
             });
@@ -135,12 +138,14 @@
             // Show the form to edit profile data
             $('#edit-profile-button').click(function() {
                 const profileData = JSON.parse(localStorage.getItem('profileData'));
+                const username = localStorage.getItem('username');
+                const password = localStorage.getItem('password');
                 $('#name').val(profileData.name);
                 $('#surname').val(profileData.surname);
                 $('#age').val(profileData.age);
                 $('#email').val(profileData.email);
-                $('#username').val(profileData.username); // Populate username field
-                $('#password').val(profileData.password); // Populate password field
+                $('#username').val(username); // Populate username field
+                $('#password').val(password); // Populate password field
                 $('#profile-display').hide();
                 $('#profile-form').show();
             });
