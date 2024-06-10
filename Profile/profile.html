@@ -69,6 +69,7 @@
             display: block;
             margin-bottom: 10px;
         }
+       
 
     </style>
 </head>
@@ -183,13 +184,10 @@ const profileData = {
     name: $('#name').val(),
     surname: $('#surname').val(),
     age: $('#age').val(),
-    email: [],
+    email: $('#email').val(),
     username: $('#username').val(),
     password: $('#password').val()
 };
-$('.email-input').each(function() {
-    profileData.email.push($(this).val());
-});
 localStorage.setItem('profileData', JSON.stringify(profileData));
 alert('Profile saved successfully!');
 loadProfileData();
