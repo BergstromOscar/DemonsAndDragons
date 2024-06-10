@@ -107,8 +107,8 @@
                     $('#display-surname').text(profileData.surname || '');
                     $('#display-age').text(profileData.age || '');
                     $('#display-email').text(profileData.email || '');
-                    $('#display-username').text(username);
-                    $('#display-password').text('•'.repeat(password.length)); // Display dots for password
+                    $('#display-username').text(profileData.username || '');
+                    $('#display-password').text('•'.repeat(profileData.password.length) || ''); // Display dots for password
                     $('#profile-display').show();
                     $('#profile-form').hide();
                 } else {
@@ -125,13 +125,11 @@
                     name: $('#name').val(),
                     surname: $('#surname').val(),
                     age: $('#age').val(),
-                    email: $('#email').val()
+                    email: $('#email').val(),
+                    username: $('#username').val(),
+                    password: $('#password').val()
                 };
-                const username = $('#username').val();
-                const password = $('#password').val();
                 localStorage.setItem('profileData', JSON.stringify(profileData));
-                localStorage.setItem('username', username);
-                localStorage.setItem('password', password);
                 alert('Profile saved successfully!');
                 loadProfileData();
             });
