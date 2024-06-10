@@ -116,7 +116,7 @@
         <div class="column">
             <div class="group-container" id="group-container">
             </div>
-            <button id="new-group-button">New Group</button>
+            <button id="new-group-button" style="visibility: visible;">New Group</button>
             <form id="new-group-form" style="display: none;">
                 <label for="group-name">Group Name:</label>
                 <input type="text" id="group-name" name="group-name"><br><br>
@@ -261,7 +261,8 @@
 
                 // Show or hide the new group form based on button click
                 $('#new-group-button').click(function() {
-                    $('#group-container').toggle();
+                    $('#group-container').hidden();
+                    $('#new-group-button').toggle();
                     $('#new-group-form').toggle();
                 });
 
