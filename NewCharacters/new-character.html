@@ -46,27 +46,20 @@
     <div class="save-popup" id="save-popup">Data has been saved!</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        function checkSignInStatus() {
-            if (!localStorage.getItem("signedIn")) {
-                window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
-            }
-        }
-
         $(document).ready(function() {
-            checkSignInStatus();
-
+                        // Define the checkSignInStatus function
+    function checkSignInStatus() {
+    if (!localStorage.getItem("signedIn")) {
+        window.location.href = "../signinsignup/signin.html"; // Redirect to sign-in/sign-up page
+    }
+}
             displayStatsForm();
-
             $('#profile-icon').click(function() {
                 window.location.href = '../Profile/profile.html';
             });
-
-            // Remove signedIn from localStorage when clicking the DADIcon.png
-            $('#icon').click(function() {
-                localStorage.removeItem("signedIn");
-            });
         });
-
+    // Call the function after defining it
+    checkSignInStatus();
         function loadXMLDoc(filename) {
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", filename, false);
@@ -108,8 +101,6 @@
                         input = $("<input>").attr("id", $(this).prop("tagName"));
                         if (!isNaN($(this).text()) && $(this).text().trim() !== "") {
                             input.attr("type", "number");
-                            input.attr("min", 1); // Set the minimum value to 1
-                            input.attr("max", 10); // Set the maximum value to 10
                         } else {
                             input.attr("type", "text");
                         }
@@ -155,6 +146,11 @@
                 savePopup.fadeOut();
             }, 2000); // Show the popup for 2 seconds
         }
+// Remove signedIn from localStorage when clicking the DADIcon.png
+$('#icon').click(function() {
+                localStorage.removeItem("signedIn");
+            });
+
     </script>
 </body>
 </html>
