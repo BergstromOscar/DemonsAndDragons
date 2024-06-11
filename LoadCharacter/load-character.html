@@ -148,6 +148,10 @@
                     var input = $("<input>").attr("id", $(this).prop("tagName"));
                     if (!isNaN($(this).text()) && $(this).text().trim() !== "") {
                         input.attr("type", "number");
+                            if ($(this).parent().prop("tagName") === "BasicStats") {
+                                input.attr("min", 1);
+                                input.attr("max", 10);
+                            }
                     } else {
                         input.attr("type", "text");
                     }
