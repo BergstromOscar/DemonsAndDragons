@@ -60,73 +60,13 @@
     </Background>
 
     <BasicStats>
-        <Strength>
-            <xs:element name="age">
-                <xs:simpleType>
-                    <xs:restriction base="xs:integer">
-                        <xs:minInclusive value="0"/>
-                        <xs:maxInclusive value="10"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </Strength>
-        <Agility>
-            <xs:element name="Agility">
-                <xs:simpleType>
-                    <xs:restriction base="xs:integer">
-                        <xs:minInclusive value="0"/>
-                        <xs:maxInclusive value="10"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element></Agility>
-        <Stamina><xs:element name="Stamina">
-                <xs:simpleType>
-                    <xs:restriction base="xs:integer">
-                        <xs:minInclusive value="0"/>
-                        <xs:maxInclusive value="10"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </Stamina>
-        <Intelligence>
-            <xs:element name="Intelligence">
-                <xs:simpleType>
-                    <xs:restriction base="xs:integer">
-                        <xs:minInclusive value="0"/>
-                        <xs:maxInclusive value="10"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </Intelligence>
-        <Psyche>
-        <xs:element name="Psyche">
-                <xs:simpleType>
-                    <xs:restriction base="xs:integer">
-                        <xs:minInclusive value="0"/>
-                        <xs:maxInclusive value="10"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </Psyche>
-        <Willpower><xs:element name="Willpower">
-                <xs:simpleType>
-                    <xs:restriction base="xs:integer">
-                        <xs:minInclusive value="0"/>
-                        <xs:maxInclusive value="10"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </Willpower>
-        <Charisma>
-        <xs:element name="Charisma">
-                <xs:simpleType>
-                    <xs:restriction base="xs:integer">
-                        <xs:minInclusive value="0"/>
-                        <xs:maxInclusive value="10"/>
-                    </xs:restriction>
-                </xs:simpleType>
-            </xs:element>
-        </Charisma>
+        <Strength>0</Strength>
+        <Agility>0</Agility>
+        <Stamina>0</Stamina>
+        <Intelligence>0</Intelligence>
+        <Psyche>0</Psyche>
+        <Willpower>0</Willpower>
+        <Charisma>0</Charisma>
     </BasicStats>
 
     <SecondaryStats>
